@@ -2,7 +2,7 @@
 ansible_python_interpreter=/usr/bin/python3
 
 [master]
-DESKTOP-G427733 ansible_user=silgonza
+DESKTOP-G427733 ansible_ssh_private_key_file=~/.ssh/labsuser.pem ansible_user=silgonza
 
 [workers]
 18.233.155.128 ansible_ssh_private_key_file=~/.ssh/labsuser.pem ansible_user=ansible

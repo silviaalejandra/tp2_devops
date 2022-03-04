@@ -1,7 +1,7 @@
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
 ansible_user=ansible
-workers ansible_ssh_private_key_file=~/.ssh/labsuser.pem
+18.233.155.128 ansible_ssh_private_key_file=~/.ssh/labsuser.pem
 
 [master]
 DESKTOP-G427733

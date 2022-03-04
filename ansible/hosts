@@ -1,13 +1,11 @@
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
-ansible_user=ansible
-18.233.155.128 ansible_ssh_private_key_file=~/.ssh/labsuser.pem
 
 [master]
-DESKTOP-G427733
+DESKTOP-G427733 ansible_user=silgonza
 
 [workers]
-18.233.155.128
+18.233.155.128 ansible_ssh_private_key_file=~/.ssh/labsuser.pem ansible_user=ansible
 
 [nfs]
-DESKTOP-G427733
+DESKTOP-G427733 ansible_user=silgonza

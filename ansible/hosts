@@ -1,0 +1,12 @@
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+ansible_user=ansible
+
+[master]
+DESKTOP-G427733
+
+[workers]
+54.235.236.85
+
+[nfs]
+DESKTOP-G427733

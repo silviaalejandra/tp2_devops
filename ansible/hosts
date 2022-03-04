@@ -6,7 +6,7 @@ ansible_user=ansible
 DESKTOP-G427733
 
 [workers]
-54.235.236.85
+18.233.155.128
 
 [nfs]
 DESKTOP-G427733

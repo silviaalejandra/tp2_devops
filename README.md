@@ -65,7 +65,7 @@ ansible ALL=(ALL) NOPASSWD:ALL
 
 ## Prueba conectividad
 
-Luego de armado el archivo hosts de ansible:
+Luego de armado el archivo /ansible/hosts de ansible:
 
 Se clona repo en la pc maestra con archivos de ansible y se prueba conectividad. Se trabaja desde el usuario ansible.
 ```

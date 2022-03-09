@@ -1,19 +1,6 @@
-variable "storage_account" {
-  type = string
-  description = "Nombre para la storage account"
-  default = "staccountlmcp2" 
-}
-
-variable "public_key_path" {
-  type = string
-  description = "Ruta para la clave pública de acceso a las instancias"
-  default = "/home/lmachado/.ssh/id_rsa.pub" # o la ruta correspondiente
-}
-
-variable "ssh_user" {
-  type = string
-  description = "Usuario para hacer ssh"
-  default = "adminUsername"
+variable "prefix" {
+  default       = "sg"
+  description = "The prefix which should be used for all resources in this plan"
 }
 
 variable "resource_group_name_prefix" {

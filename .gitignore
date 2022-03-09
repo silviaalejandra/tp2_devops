@@ -1,6 +1,6 @@
 *.terraform*
 terraform/.terraform.lock.hcl
+terraform/credentials.tf
 terraform/main.tfplan
 terraform/terraform.tfstate
 terraform/terraform.tfstate.backup
-terraform/credentials.tf

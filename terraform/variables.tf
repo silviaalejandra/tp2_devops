@@ -34,3 +34,9 @@ variable "resource_group_location" {
   default = "westeurope"
   description   = "Location of the resource group."
 }
+
+variable "environment" {
+  type = string
+  description = "Environment tags val"
+  default = "TP_02_SILGONZA" 
+}

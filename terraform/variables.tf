@@ -24,37 +24,41 @@ variable "environment" {
   default = "TP_02_SILGONZA" 
 }
 
-variable "vm_size" { # Deseable 2 CPU, 8 GB, 1x20 HDD
+variable "vm_size" { # Deseable 2 CPU, 4 GB, 1x20 HDD
   type = string
   description = "Tamaño de la máquina virtual generica"
   default = "Standard_A2_v2" # 2 CPU, 4 GB, 20GB HDD 
 }
 
+variable "vm_size_b" { # Deseable 2 CPU, 8 GB, 1x20 HDD
+  type = string
+  description = "Tamaño de la máquina virtual generica"
+  default = "Standard_B2ms" # 2 CPU, 8 GB, 16GB HDD 
+}
+
+variable "vm_size_c" { # Deseable 2 CPU, 8 GB, 1x20 HDD
+  type = string
+  description = "Tamaño de la máquina virtual generica"
+  default = "Standard_F1" # 2 CPU, 8 GB, 16GB HDD 
+}
+
+# max 9 valores
 variable "vm_count" { # Listado de VMs a crear - todas mismo tamanio generico
   description = "Lista de maquinas virtuales a crear"
   type = list(string)
-  default = ["master", "nfs", "worker01", "worker02"]
+  default = ["nfs"]
 }
 
-variable "vm_size_master" { # Deseable 2 CPU, 8 GB, 1x20 HDD
-  type = string
-  description = "Tamaño de la máquina virtual Master"
-  default = "Standard_F2s_v2" # 2 CPU, 4 GB, 16GB HDD 
+# max 9 valores
+variable "vm_count_b" { # Listado de VMs a crear - todas mismo tamanio generico
+  description = "Lista de maquinas virtuales a crear tipo B"
+  type = list(string)
+  default = ["master"]
 }
 
-variable "vm_size_nfs" { # Deseable 2 CPU, 4 GB, 1x20 HDD
-  type = string
-  description = "Tamaño de la máquina virtual NFS"
-  default = "Standard_F2s_v2" # 2 CPU, 4 GB, 16GB HDD 
+# max 9 valores
+variable "vm_count_c" { # Listado de VMs a crear - todas mismo tamanio generico
+  description = "Lista de maquinas virtuales a crear tipo C"
+  type = list(string)
+  default = ["worker01", "worker02"]
 }
-
-variable "vm_size_worker" { # Deseable 2 CPU, 4 GB, 1x20 HDD
-  type = string
-  description = "Tamaño de la máquina virtual Worker"
-  default = "Standard_F2s_v2" # 2 CPU, 4 GB, 16GB HDD 
-}
-
-#variable "vm_instances_count" {
-#  type        = number
-#  description = "# count for nodes"
-#}

@@ -29,7 +29,7 @@ resource "azurerm_network_interface" "vm_nic" {
     name                           = "${var.prefix}-ipconfig-${var.vm_count[count.index]}"
     subnet_id                      = azurerm_subnet.subnet.id 
     private_ip_address_allocation  = "Static"
-    private_ip_address             = "192.168.1.${count.index + 10}" # subnet 192.168.1.0
+    private_ip_address             = "192.168.1.1${count.index + 1}" # subnet 192.168.1.0
     public_ip_address_id           = azurerm_public_ip.public_ip[count.index].id
   }
 
@@ -42,6 +42,72 @@ resource "azurerm_network_interface" "vm_nic" {
 resource "azurerm_public_ip" "public_ip" {
   name                = "${var.prefix}-publicip-${var.vm_count[count.index]}"
   count               = length(var.vm_count)
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  allocation_method   = "Dynamic"
+  sku                 = "Basic"
+
+    tags = {
+        environment = var.environment
+    }
+}
+
+resource "azurerm_network_interface" "vm_nic_b" {
+  name                = "${var.prefix}-nic-${var.vm_count_b[count.index]}"
+  count               = length(var.vm_count_b)
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+    ip_configuration {
+    name                           = "${var.prefix}-ipconfig-${var.vm_count_b[count.index]}"
+    subnet_id                      = azurerm_subnet.subnet.id 
+    private_ip_address_allocation  = "Static"
+    private_ip_address             = "192.168.1.8${count.index + 1}" # subnet 192.168.1.0
+    public_ip_address_id           = azurerm_public_ip.public_ip_b[count.index].id
+  }
+
+    tags = {
+        environment = var.environment
+    }
+}
+
+# IP publica general
+resource "azurerm_public_ip" "public_ip_b" {
+  name                = "${var.prefix}-publicip-${var.vm_count_b[count.index]}"
+  count               = length(var.vm_count_b)
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  allocation_method   = "Dynamic"
+  sku                 = "Basic"
+
+    tags = {
+        environment = var.environment
+    }
+}
+
+resource "azurerm_network_interface" "vm_nic_c" {
+  name                = "${var.prefix}-nic-${var.vm_count_c[count.index]}"
+  count               = length(var.vm_count_c)
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+    ip_configuration {
+    name                           = "${var.prefix}-ipconfig-${var.vm_count_c[count.index]}"
+    subnet_id                      = azurerm_subnet.subnet.id 
+    private_ip_address_allocation  = "Static"
+    private_ip_address             = "192.168.1.3${count.index + 1}" # subnet 192.168.1.0
+    public_ip_address_id           = azurerm_public_ip.public_ip_c[count.index].id
+  }
+
+    tags = {
+        environment = var.environment
+    }
+}
+
+# IP publica general
+resource "azurerm_public_ip" "public_ip_c" {
+  name                = "${var.prefix}-publicip-${var.vm_count_c[count.index]}"
+  count               = length(var.vm_count_c)
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Dynamic"

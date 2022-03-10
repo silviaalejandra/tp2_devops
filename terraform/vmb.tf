@@ -1,13 +1,13 @@
-# Creamos las vms master-nfs-worker01-worker02
+# Creamos las vms del tipo b (vm_size_b)
 
-resource "azurerm_linux_virtual_machine" "vm" {
-    name                = "${var.prefix}-${var.virtual_machine_name_prefix}-${var.vm_count[count.index]}"
-    count               = length(var.vm_count)
+resource "azurerm_linux_virtual_machine" "vm_b" {
+    name                = "${var.prefix}-${var.virtual_machine_name_prefix}-b-${var.vm_count_b[count.index]}"
+    count               = length(var.vm_count_b)
     resource_group_name = azurerm_resource_group.rg.name
     location            = var.location
-    size                = var.vm_size
+    size                = var.vm_size_b
     admin_username      = "silgonza"
-    network_interface_ids = [ azurerm_network_interface.vm_nic[count.index].id ]
+    network_interface_ids = [ azurerm_network_interface.vm_nic_b[count.index].id ]
     disable_password_authentication = true
 
     admin_ssh_key {

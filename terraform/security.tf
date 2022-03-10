@@ -27,3 +27,15 @@ resource "azurerm_network_interface_security_group_association" "sec_group_assoc
     network_interface_id      = azurerm_network_interface.vm_nic[count.index].id
     network_security_group_id = azurerm_network_security_group.security_group.id
 }
+
+resource "azurerm_network_interface_security_group_association" "sec_group_assoc_b" {
+    count                     = length(var.vm_count_b)
+    network_interface_id      = azurerm_network_interface.vm_nic_b[count.index].id
+    network_security_group_id = azurerm_network_security_group.security_group.id
+}
+
+resource "azurerm_network_interface_security_group_association" "sec_group_assoc_c" {
+    count                     = length(var.vm_count_c)
+    network_interface_id      = azurerm_network_interface.vm_nic_c[count.index].id
+    network_security_group_id = azurerm_network_security_group.security_group.id
+}

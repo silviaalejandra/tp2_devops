@@ -6,7 +6,7 @@ resource "azurerm_linux_virtual_machine" "vm_c" {
     resource_group_name = azurerm_resource_group.rg.name
     location            = var.location
     size                = var.vm_size_c
-    admin_username      = "silgonza"
+    admin_username      = var.ssh_user
     network_interface_ids = [ azurerm_network_interface.vm_nic_c[count.index].id ]
     disable_password_authentication = true
 
@@ -40,39 +40,4 @@ resource "azurerm_linux_virtual_machine" "vm_c" {
     tags = {
         environment = var.environment
     }	
-}
-
-resource "null_resource" "inventory_c" {
-  count = length(var.vm_count_c)
-
-  # Generate ansible dynamic inventory python script. 
-  # https://jeewansooriyaarachchi.medium.com/run-ansible-playbook-inside-azure-terraform-scripts-76b1dcd72b34
-  provisioner "local-exec" {
-    command = "sh generate_inv.sh '''$hostname''' '''$ip'''"
-    environment = {
-      hostname = "${element(azurerm_linux_virtual_machine.vm_c[count.index].*.name, count.index)}"
-      ip = "${element(azurerm_linux_virtual_machine.vm_c[count.index].*.private_ip_address, count.index)}"
-    }
-  }
-  
-  # Run the ansible playbook
-  provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i $file resolv_correction.yml"
-    environment = {
-      #file = "/tmp/${element(azurerm_linux_virtual_machine.vm_c[count.index].*.name, count.index)}.py"
-      file = "${element(azurerm_linux_virtual_machine.vm_c[count.index].*.name, count.index)}.py"
-    }
-  }
-
-  # Delete the temporarily script file created in above step
-  #provisioner "local-exec" {
-  #  command = "rm -f $file"
-  #  environment = {
-  #    file = "/tmp/${element(azurerm_linux_virtual_machine.vm[count.index].*.name, count.index)}.py"
-  #  }
-  #}
-
- # depends_on = [
- #   azurerm_linux_virtual_machine.vm[count.index],
- # ]
 }

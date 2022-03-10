@@ -1,6 +1,7 @@
 *.terraform*
 *.ssh*
 *.old
+*.log
 terraform/.terraform.lock.hcl
 terraform/credentials.tf
 terraform/main.tfplan

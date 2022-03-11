@@ -1,22 +1,29 @@
 ---
+- name: swap space used mb
+  shell : free -m | grep Swap | awk '{print $3}'
+  register: swap_used
+  become: true
+  become_method: sudo
+
 - name: disable swap
   command: swapoff  -a
   when: 'swap_status == "no"'
-  become: yes
+  become: true
   become_method: sudo
-  
 
 - name: disable swap
   command: swapon -a
   when: 'swap_status == "yes"'
-  become: yes
+  become: true
   become_method: sudo  
 
+#Es necesario también eliminar la línea del fichero /etc/fstab
+# que monta en el arranque el swap:
 - name: Eliminamos cs-swap de etc/fstab
   lineinfile:
     dest: /etc/fstab
     regexp: '.*/dev/mapper/cs-swap.*'
     line: ''
     state: present
-  become: yes
+  become: true
   become_method: sudo

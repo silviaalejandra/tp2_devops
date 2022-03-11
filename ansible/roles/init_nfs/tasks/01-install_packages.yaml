@@ -1,0 +1,48 @@
+---
+
+#Instalamos los paquetes de NFS y arrancamos el servicio:
+- name: "install {{ item }}"
+  dnf:
+    name: '{{ item }}'
+    state: present
+    update_cache: yes
+  register: result
+  become: true
+  become_method: sudo
+  loop: "{{ list_packages }}"
+  when: list_packages is defined
+
+- name: start nfs-server
+  systemd:
+    name: 'nfs-server'
+    state: started
+    enabled: yes
+  become: true
+  become_method: sudo
+
+#Compartir un directorio para exportar por NFS
+# creamos un directorio:
+- name: Creo directorios /srv/nfs
+  file:
+    path: /srv/nfs
+    state: directory
+  become: true
+  become_method: sudo
+
+#Configuramos el acceso al share de NFS de tal forma que el fichero /etc/exports 
+# sea como el que se muestra cambiando las ips por las de nuestros master y workers:
+- name: update /etc/exports
+  lineinfile:
+    dest: /etc/exports
+    regexp: '.*{{ item.ip }}.*'
+    line: '/srv/nfs	{{ item.ip }}(rw,sync)'
+    state: present
+  with_items: "{{ hosts }}"
+  become: true
+  become_method: sudo
+
+#Releemos el fichero /etc/exports para aplicar la nueva configuracion:
+- name: Forzamo lectura de fichero
+  command: 'exportfs -r'
+  become: true
+  become_method: sudo

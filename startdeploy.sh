@@ -105,8 +105,8 @@ declare -i var_vm_count=0
 
 # Genero el archivo var_host para el controller
 echo `date "+%d/%m/%Y %H:%M:%S"`": Genero el archivo var_host para el controller"
-fileTemplate="$strActualDir/ansible/roles/init_controller/vars/template_vars_host"
-fileHosts="$strActualDir/ansible/roles/init_controller/vars/main/vars_host.yaml"
+fileTemplate="$strActualDir/ansible/group_vars/template_vars_host"
+fileHosts="$strActualDir/ansible/group_vars/v_host.yaml" #roles/init_controller/vars/main/vars_host.yaml"
 cp $fileTemplate $fileHosts
 #echo -e "this is a new line \nthis is another new line" >> file.txt
 #  - name: ansible
@@ -198,4 +198,6 @@ echo `date "+%d/%m/%Y %H:%M:%S"`": ejecuto instalación de Kubernetes"
 cd $strActualDir/ansible
 . ./deploy.sh
 
+# regreso al dir origen
+cd $strActualDir
 #return 

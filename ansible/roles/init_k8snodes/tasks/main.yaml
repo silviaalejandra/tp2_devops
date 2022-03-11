@@ -1,7 +1,7 @@
 ---
-- include_tasks: 01-firewall.yaml
+- include_tasks: 01-config_firewall.yaml
 - include_tasks: 02-swap.yaml
-- include_tasks: 03-docker.yaml
+- include_tasks: 03-install_docker.yaml
   vars:
     repos:
       - repo_url: 'https://download.docker.com/linux/centos/docker-ce.repo'

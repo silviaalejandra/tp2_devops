@@ -3,19 +3,21 @@
   debug:
     msg: 'Instalacion de Kubernetes'
 
-- name: 'Copio archivo para config repo | kubernetes.repo'
+#Configuramos el repositorio de kubernetes:
+- name: 'Copio kubernetes.repo'
   copy:
     src: 'kubernetes.repo'
     dest: '/etc/yum.repos.d/'
-  become: yes
+  become: true
   become_method: sudo
-  
+
+#Instalamos kubernetes:  
 - name: 'instalo los paquete kubelet,kubeadm,kubectl'
   dnf:
     name: [kubelet,kubeadm,kubectl]
     disable_excludes: kubernetes
     state: present
-  become: yes
+  become: true
   become_method: sudo
 
 - name: 'Inicializa servicio y setea inicio automatico para servicio kubelet'
@@ -23,5 +25,5 @@
     name: 'kubelet'
     state: started
     enabled: yes
-  become: yes
+  become: true
   become_method: sudo

@@ -9,14 +9,14 @@
     dest: '{{ item.repo_dest | mandatory}}'
   #when: 'repo_url is defined and repo_dest  is defined'
   loop: '{{ repos | mandatory }}'
-  become: yes
+  become: true
   become_method: sudo
   
 - name: 'instalo docker ce'
   dnf:
     name: 'docker-ce'
     state: present
-  become: yes
+  become: true
   become_method: sudo
 
 - name: 'Inicializa servicio y setea inicio automatico para servicio docker'
@@ -24,21 +24,19 @@
     name: 'docker'
     state: started
     enabled: yes
-  become: yes
+  become: true
   become_method: sudo
-
 
 - name: 'Copio archivo para config daemon.json'
   copy:
     src: 'daemon.json'
     dest: '/etc/docker/'
-  become: yes
+  become: true
   become_method: sudo
 
 - name: Reiniciamos el servicio de docker
   systemd:
     name: 'docker'
     state: reloaded
-  become: yes
+  become: true
   become_method: sudo
-

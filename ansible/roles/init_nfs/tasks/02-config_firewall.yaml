@@ -1,18 +1,17 @@
 ---
 
-- name: "instalar {{ item }}"
+- name: "install {{ item }}"
   firewalld:
     service: '{{ item }}'
     permanent: yes
     state: enabled
   loop: '{{ list_service }}'
-  become: yes
+  become: true
   become_method: sudo
 
-
-- name: Reiniciamos el servicio de firewall
+- name: restart firewalld
   systemd:
     name: firewalld
     state: reloaded
-  become: yes
+  become: true
   become_method: sudo

@@ -1,0 +1,51 @@
+---
+#Vamos a activar transparent masquerading para que los PODs
+# puedan comunicarse dentro del cluster mediante VXLAN:
+#Los Pods se ejecutan dentro de su propia red aislados
+# de la red en la que se encuentran las máquinas, pero es
+# necesario que se puedan comunicar entre ellos. Para ello
+# kubernetes utiliza un protocolo de llamado VXLAN.
+- name: modeprobe
+  #community.general.modprobe:
+  modprobe: 
+   name: "{{ item }}"
+   state: present
+  loop:
+   - br_netfilter
+  become: true
+  become_method: sudo
+
+- name: masquerade
+  firewalld:
+    masquerade: yes
+    state: enabled
+    permanent: true
+  become: true
+  become_method: sudo
+
+#Para permitir que kubernetes maneje correctamente el
+# tráfico con el cortafuegos:
+- name: 'Copio archivo para config k8s.conf'
+  copy:
+    src: 'k8s.conf'
+    dest: '/etc/sysctl.d/'
+  become: true
+  become_method: sudo
+
+- name: aplicar config k8s.conf
+  shell: sysctl -p --system
+  become: true
+  become_method: sudo
+  when: result.changed
+
+- name: restart firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
+  become: true
+  become_method: sudo
+
+#- name: restart firewall
+#  shell: firewall-cmd --reload
+#  become: true
+#  become_method: sudo

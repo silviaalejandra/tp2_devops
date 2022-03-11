@@ -1,7 +1,7 @@
 # Creamos las vms master-nfs-worker01-worker02
 
 resource "azurerm_linux_virtual_machine" "vm" {
-    name                = "${var.prefix}-${var.virtual_machine_name_prefix}-${var.vm_count[count.index]}"
+    name                = "${var.prefix}-${var.virtual_machine_name_prefix}-a-${var.vm_count[count.index]}"
     count               = length(var.vm_count)
     resource_group_name = azurerm_resource_group.rg.name
     location            = var.location

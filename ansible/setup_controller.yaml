@@ -1,0 +1,9 @@
+---
+
+- hosts: controller
+  strategy: debug
+  vars_files:
+    - 'group_vars/kube.yaml'
+  gather_facts: false
+  roles:
+    - role: setup_controller      

@@ -1,0 +1,45 @@
+---
+- name: Set TimeZone
+  timezone:
+    name: '{{ timezone_name }}' #defaults
+  become: yes
+  become_method: sudo
+
+- name: Install Chrony
+  dnf:
+    name: chrony
+    state: present
+    #exclude:
+    #- chrony
+    update_cache: yes
+  become: yes
+
+# Para Ubuntu WSL se requiere service
+- name: Start Chrony
+  ansible.builtin.service:
+    state: started
+    name: chrony
+  #ansible.builtin.systemd:
+  #  daemon_reload: no
+  #  state: started
+  #  name: chronyd
+  #  enabled: yes
+  become: yes
+  become_method: sudo
+
+- name: Reset timedate
+  #command: timedatectl set-ntp true
+  command: hwclock -s #Ubuntu WSL
+  become: yes
+  become_method: sudo
+
+- name: Update hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ item.name }}$'
+    line: '{{ item.ip }} {{ item.name }} {{ item.name_long }}'
+    state: present
+  #when: 'var_hosts is defined'
+  with_items: '{{ var_hosts }}'
+  become: yes
+  become_method: sudo

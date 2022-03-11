@@ -6,10 +6,25 @@
 # ------- values
 # ------- A = Apply
 # ------- D = Destroy
+# ------- S = Skip
 # --- ansible_option (inAnsOption)
 # ------- values
-# ------- A = Apply
-# ------- D = Destroy
+# ------- A = Apply playbooks
+# ------- S = Skip playbooks
+#*************************************************
+# Ejecuta 
+# *** 1- Apply de infra en terraform con el 
+#        contenido de /terraform
+# *** 2- Con la salida del Aplly de terraform
+#        arma los valores del archivo hosts
+#        que se deben introducir en la pc de 
+#        ejecucion
+# *** 3- Playbook de ansible para control de
+#        aplicaciones en el controller y cargar
+#        los valores en /etc/hosts con el 
+#        contenido de /ansible 
+# *** 4- Prueba de conectividad nodos
+# *** 5- Ejecucion de instalacion kubernetes
 #--------------------------------------------------
 inTerOption=${1}
 inAnsOption=${2}
@@ -67,10 +82,14 @@ else
 		# regreso al dir origen
 		cd $strActualDir
 	else
-		echo `date "+%d/%m/%Y %H:%M:%S"`": Opcion terraform incorrecta. Verifique y vuelva a intentar"
-		#exit 1
-		echo "error"
-		#return
+		if [ "$inTerOption" = "S" ]
+		then
+			echo `date "+%d/%m/%Y %H:%M:%S"`": No se ejecuta terraform"
+		else 
+			echo `date "+%d/%m/%Y %H:%M:%S"`": Opcion terraform incorrecta. Verifique y vuelva a intentar"
+			#exit 1
+			return
+		fi
 	fi
 fi
 
@@ -142,11 +161,22 @@ done
 
 # regreso al dir origen
 cd $strActualDir
-	
-#***************************************** ANSIBLE ******#	
-# Se ejecutan en orden los playbook de armado local y se 
-# invoca el fichero de despliegue de kubernetes
-#***************************************** ANSIBLE ******#	
+
+if [ "$inAnsOption" = "S" ]
+then
+	echo `date "+%d/%m/%Y %H:%M:%S"`": Fin de tareas - No se ejecuta ansible"
+	return
+else 
+	if [ "$inAnsOption" != "A" ]
+	then
+		echo `date "+%d/%m/%Y %H:%M:%S"`": Opcion ansible incorrecta. Verifique y vuelva a intentar"
+		#exit 1
+		return
+	fi
+fi
+#***************************************** ANSIBLE LOCAL******#	
+# Se ejecutan en orden los playbook de armado local 
+#***************************************** ANSIBLE LOCAL******#	
 
 # ejecuto la actualizacion del equipo controller
 echo `date "+%d/%m/%Y %H:%M:%S"`": ejecuto la actualizacion del equipo controller"
@@ -155,4 +185,11 @@ cd $strActualDir/ansible
 
 echo `date "+%d/%m/%Y %H:%M:%S"`": valido las conexiones entre nodos"
 ansible -i hosts -m ping all
+
+# regreso al dir origen
+cd $strActualDir
+
+#***************************************** ANSIBLE KUBE+APP******#	
+# Se invoca el fichero de despliegue de kubernetes
+#***************************************** ANSIBLE KUBE+APP******#	
 #return 

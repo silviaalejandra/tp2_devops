@@ -3,7 +3,7 @@
 - name: Set TimeZone
   timezone:
     name: '{{ timezone_name }}' #defaults
-  become: yes
+  become: true
   become_method: sudo
 
 - name: Install Chrony
@@ -11,14 +11,14 @@
     name: chrony
     state: present
     update_cache: yes
-  become: yes
+  become: true
   
  #- name: Install cloudinit
  # apt:
  #   name: "cloud-init"
  #   state: present
  #   update_cache: yes
- # become: yes
+ # become: true
 
 # Para Ubuntu WSL se requiere service
 - name: Start Chrony
@@ -30,23 +30,47 @@
   #  state: started
   #  name: chronyd
   #  enabled: yes
-  become: yes
+  become: true
   become_method: sudo
 
 - name: Reset timedate
   #command: timedatectl set-ntp true
   command: hwclock -s #Ubuntu WSL
-  become: yes
+  become: true
   become_method: sudo
+
+# Agregar o reemplazar hosts
+#- name: Try to replace the line
+#  replace:
+#    dest    : /etc/hosts
+#    replace : '{{ item.ip }} '
+#    regexp  : '.*{{ item.name }}.*$'
+#    backup  : yes
+#  with_items: "{{ hosts }}"
+#  become: true
+#  become_method: sudo
+#  register  : checkIfLineIsHere
+
+# If the line not is here, I add it
+#- name: Add line
+#  lineinfile:
+#   state   : present
+#   dest    : /etc/hosts
+#   line    : '{{ item.ip }} {{ item.name }} {{ item.name_long }}'
+#   regexp  : ''
+#   insertafter: EOF
+#  when: checkIfLineIsHere.changed == false
+#  with_items: "{{ hosts }}"
+#  become: true
+#  become_method: sudo
 
 - name: Update hosts
   lineinfile:
     dest: /etc/hosts
-    regexp: '.*{{ item.name }}$'
+    regexp: '.*{{ item.name }}.*$'
     line: '{{ item.ip }} {{ item.name }} {{ item.name_long }}'
     state: present
     backup: no
-  #when: 'var_hosts is defined'
   with_items: "{{ hosts }}"
-  become: yes
+  become: true
   become_method: sudo

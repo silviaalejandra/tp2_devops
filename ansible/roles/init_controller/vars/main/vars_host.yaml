@@ -2,14 +2,14 @@
 
 hosts:
   - name: nfs
-    ip: 20.224.121.173
+    ip: 
     name_long: nfs.silgonza.ar
   - name: master
-    ip: 20.23.249.182
+    ip: 20.126.4.204
     name_long: master.silgonza.ar
   - name: worker02
-    ip: 20.224.228.89
+    ip: 20.126.130.144
     name_long: worker02.silgonza.ar
   - name: worker01
-    ip: 20.123.192.7
+    ip: 20.126.68.83
     name_long: worker01.silgonza.ar

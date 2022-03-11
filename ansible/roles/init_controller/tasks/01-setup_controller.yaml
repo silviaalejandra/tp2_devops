@@ -1,4 +1,5 @@
 ---
+
 - name: Set TimeZone
   timezone:
     name: '{{ timezone_name }}' #defaults
@@ -6,13 +7,22 @@
   become_method: sudo
 
 - name: Install Chrony
-  dnf:
+  apt:
     name: chrony
     state: present
     #exclude:
     #- chrony
     update_cache: yes
   become: yes
+  
+ #- name: Install cloudinit
+ # apt:
+ #   name: "cloud-init"
+ #   state: present
+ #   #exclude:
+ #   #- chrony
+ #   update_cache: yes
+ # become: yes
 
 # Para Ubuntu WSL se requiere service
 - name: Start Chrony
@@ -39,7 +49,8 @@
     regexp: '.*{{ item.name }}$'
     line: '{{ item.ip }} {{ item.name }} {{ item.name_long }}'
     state: present
+    backup: yes
   #when: 'var_hosts is defined'
-  with_items: '{{ var_hosts }}'
+  with_items: "{{ hosts }}"
   become: yes
   become_method: sudo

@@ -1,6 +1,6 @@
 [all:vars]
 ansible_python_interpreter=/usr/bin/python3
-ansible_user=silgonza
+ansible_user=ansible
 
 [controller]
 #ubuntu_note

@@ -1,0 +1,15 @@
+---
+
+hosts:
+  - name: nfs
+    ip: 51.124.240.104
+    name_long: nfs.silgonza.ar
+  - name: master
+    ip: 51.124.195.79
+    name_long: master.silgonza.ar
+  - name: worker02
+    ip: 51.124.197.210
+    name_long: worker02.silgonza.ar
+  - name: worker01
+    ip: 51.124.197.182
+    name_long: worker01.silgonza.ar

@@ -27,4 +27,4 @@ exec > >(tee ${strLog} 2>&1)
 # ejecuto
 echo `date "+%d/%m/%Y %H:%M:%S"`": Inicia seteo de nodo worker con ansible"
 ansible-playbook -i hosts -l workers setup_worker.yaml -v
-echo `date "+%d/%m/%Y %H:%M:%S"`": Inicia seteo de nodo worker con ansible"
+echo `date "+%d/%m/%Y %H:%M:%S"`": Finaliza seteo de nodo worker con ansible"

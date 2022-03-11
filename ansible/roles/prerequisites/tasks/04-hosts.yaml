@@ -1,0 +1,12 @@
+---
+- name: Update hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '.*{{ item.name }}$'
+    line: '{{ item.ip }} {{ item.name }} {{ item.name_long }}'
+    state: present
+    backup: yes
+  #when: 'var_hosts is defined'
+  with_items: "{{ hosts }}"
+  become: yes
+  become_method: sudo

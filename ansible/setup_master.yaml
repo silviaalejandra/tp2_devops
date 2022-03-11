@@ -1,0 +1,13 @@
+---
+
+- hosts: master
+#  strategy: debug
+  vars_files:
+    - 'group_vars/kube.yaml'
+  gather_facts: false
+  roles:
+    - role: prerequisites
+    - role: init_k8snodes
+      vars:
+        swap_status: 'no'
+    #- role: install_master

@@ -1,0 +1,65 @@
+---
+
+- name: 'instalo gestor de particiones'
+  dnf:
+    name: '{{ package_partition}}'
+    state: present
+  become: yes
+  become_method: sudo
+  when: 1==1
+
+- name: Monto /dev/vdb
+  mount:
+    path: /dev/vdb
+    src: /dev/vdb
+    fstype: ext4
+    state: present
+  become: yes
+  become_method: sudo  
+
+
+- name: Creo particion ext4 en /dev/vdb
+  filesystem:
+    fstype: ext4
+    dev: /dev/vdb
+  become: yes
+  become_method: sudo
+
+- name: Creo volumen fisico /dev/vdb en grupo data_vg
+  lvg:
+    vg: data_vg
+    pvs: /dev/vdb
+  become: yes
+  become_method: sudo
+
+
+- name: Creo volumen logico nfs_lv
+  lvol:
+    vg: /dev/data_vg
+    lv: nfs_lv
+    size: 100%FREE
+  become: yes
+  become_method: sudo
+
+- name: Creo particion xfs en volumen logico
+  filesystem:
+    fstype: xfs
+    dev: /dev/data_vg/nfs_lv
+  become: yes
+  become_method: sudo
+
+- name: Creo directorios /srv/nfs
+  file:
+    path: /srv/nfs
+    state: directory
+  become: yes
+  become_method: sudo
+
+- name: Agrego configuracion a  /etc/fstab
+  lineinfile:
+    dest: /etc/fstab
+    regexp: '/dev/data_vg/nfs_lv /srv/nfs xfs defaults 0 0'
+    line: '/dev/data_vg/nfs_lv /srv/nfs xfs defaults 0 0'
+    state: present
+  become: yes
+  become_method: sudo

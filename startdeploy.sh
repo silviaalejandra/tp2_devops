@@ -181,7 +181,7 @@ fi
 # ejecuto la actualizacion del equipo controller
 echo `date "+%d/%m/%Y %H:%M:%S"`": ejecuto la actualizacion del equipo controller"
 cd $strActualDir/ansible
-. ./exec_controller.sh
+. ./controller.sh
 
 echo `date "+%d/%m/%Y %H:%M:%S"`": valido las conexiones entre nodos"
 ansible -i hosts -m ping all
@@ -192,4 +192,8 @@ cd $strActualDir
 #***************************************** ANSIBLE KUBE+APP******#	
 # Se invoca el fichero de despliegue de kubernetes
 #***************************************** ANSIBLE KUBE+APP******#	
+echo `date "+%d/%m/%Y %H:%M:%S"`": ejecuto instalación de Kubernetes"
+cd $strActualDir/ansible
+. ./deploy.sh
+
 #return 

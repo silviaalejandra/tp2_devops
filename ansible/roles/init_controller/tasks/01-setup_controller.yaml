@@ -10,8 +10,6 @@
   apt:
     name: chrony
     state: present
-    #exclude:
-    #- chrony
     update_cache: yes
   become: yes
   
@@ -19,8 +17,6 @@
  # apt:
  #   name: "cloud-init"
  #   state: present
- #   #exclude:
- #   #- chrony
  #   update_cache: yes
  # become: yes
 
@@ -49,7 +45,7 @@
     regexp: '.*{{ item.name }}$'
     line: '{{ item.ip }} {{ item.name }} {{ item.name_long }}'
     state: present
-    backup: yes
+    backup: no
   #when: 'var_hosts is defined'
   with_items: "{{ hosts }}"
   become: yes

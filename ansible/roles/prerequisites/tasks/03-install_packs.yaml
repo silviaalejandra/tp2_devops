@@ -1,0 +1,32 @@
+---
+- name: debug install
+  debug:
+    var: packages
+
+- name: DNF update the system
+  dnf: 
+    name: "*"
+    state: latest
+  #when: ansible_facts['os_family'] == 'RedHat' and ansible_facts  ['distribution_major_version'] >= '8'
+  become: yes
+  become_method: sudo
+
+- name: packages list
+  set_fact:
+     list_packages: "{{ packages.split(',') }}"
+  when: packages is defined
+
+- name: debug packages list
+  debug:
+    var: list_packages
+
+- name: "install {{ item }}"
+  command: dnf install {{ item }} -y # dnf arroja error con la lista
+  #dnf: 
+  #  name: '{{ item }}'
+  #  state: present
+  #  update_cache: yes
+  register: result
+  become: yes
+  loop: "{{ list_packages }}"
+  when: list_packages is defined

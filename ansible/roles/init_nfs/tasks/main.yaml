@@ -1,0 +1,15 @@
+---
+
+- include_tasks: 01-crear_volumen_logico.yaml
+  vars:
+    package_partition: 'lvm2'
+
+
+- include_tasks: 02-instalar_nfs.yaml
+  vars:
+    list_packages: ['nfs-utils','net-tools']
+
+
+- include_tasks: 03-config_firewall.yaml
+  vars:
+    list_service: ['nfs','rpc-bind','mountd']

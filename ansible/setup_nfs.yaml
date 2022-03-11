@@ -1,0 +1,10 @@
+---
+
+- hosts: nfs
+#  strategy: debug
+  vars_files:
+    - 'group_vars/kube.yaml'
+  gather_facts: false
+  roles:
+    - role: prerequisites
+    #- role: install_nfs

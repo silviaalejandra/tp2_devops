@@ -1,0 +1,13 @@
+---
+
+- include_tasks: 01-timezone.yaml
+- include_tasks: 02-selinux.yaml
+  vars:
+    selinux_status: disabled # Se inactiva para el lab
+
+- include_tasks: 03-install_packs.yaml
+  vars:
+    packages: 'nfs-utils,nfs4-acl-tools,wget'
+    
+- include_tasks: 04-hosts.yaml
+- include_tasks: 05-firewall.yaml

@@ -1,0 +1,8 @@
+---
+- name: active inactive SELinux
+  become: yes
+  become_method: sudo
+  #  selinux_status: disabled # El estado puede ser disabled | enforcing
+  selinux:
+    state: '{{ selinux_status | mandatory }}'
+

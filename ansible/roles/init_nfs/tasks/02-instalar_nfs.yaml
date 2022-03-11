@@ -1,0 +1,40 @@
+---
+
+- name: "instalar {{ item }}"
+  dnf:
+    name: '{{ item }}'
+    state: present
+    update_cache: yes
+  register: result
+  become: yes
+  loop: "{{ list_packages }}"
+  when: list_packages is defined
+
+
+
+- name: Inicializa servicio y setea inicio automatico para servicio nfs-server
+  systemd:
+    name: 'nfs-server'
+    state: started
+    enabled: yes
+  become: yes
+  become_method: sudo
+
+- name: Agrego ips acceso a nfs a /etc/exports
+  lineinfile:
+    dest: /etc/exports
+    regexp: '.*{{ item }}.*'
+    line: '/srv/nfs	{{ item }}(rw,sync)'
+    state: present
+  loop: '{{ nfs_ips_access }}'
+  become: yes
+  become_method: sudo
+
+- name: Forzamo lectura de fichero
+  command: 'exportfs -r'
+  become: yes
+  become_method: sudo
+
+  #when: exports.changed
+  #tags:
+  #- nfs/server

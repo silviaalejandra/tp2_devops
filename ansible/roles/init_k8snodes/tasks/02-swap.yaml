@@ -1,0 +1,22 @@
+---
+- name: disable swap
+  command: swapoff  -a
+  when: 'swap_status == "no"'
+  become: yes
+  become_method: sudo
+  
+
+- name: disable swap
+  command: swapon -a
+  when: 'swap_status == "yes"'
+  become: yes
+  become_method: sudo  
+
+- name: Eliminamos cs-swap de etc/fstab
+  lineinfile:
+    dest: /etc/fstab
+    regexp: '.*/dev/mapper/cs-swap.*'
+    line: ''
+    state: present
+  become: yes
+  become_method: sudo

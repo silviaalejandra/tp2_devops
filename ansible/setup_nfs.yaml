@@ -8,4 +8,4 @@
   gather_facts: false
   roles:
     - role: prerequisites
-    #- role: install_nfs
+    - role: init_nfs

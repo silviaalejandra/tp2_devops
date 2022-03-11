@@ -38,6 +38,8 @@
     line: '/srv/nfs	{{ item.ip }}(rw,sync)'
     state: present
   with_items: "{{ hosts }}"
+  when: 
+    item.name != "nfs"
   become: true
   become_method: sudo
 

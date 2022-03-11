@@ -2,7 +2,7 @@
 - name: Set TimeZone
   timezone:
     name: '{{ timezone_name }}' #defaults
-  become: yes
+  become: true
   become_method: sudo
 
 - name: Install Chrony
@@ -10,19 +10,24 @@
     name: chrony
     state: present
     update_cache: yes
-  become: yes
+  become: true
+  become_method: sudo
 
 - name: Start Chrony
-  command: systemctl enable chronyd
+  #command: systemctl enable chronyd
+  service:
+      name: chronyd
+      state: started #reloaded, restarted, started, stopped
+      enabled: True
   #ansible.builtin.systemd:
   #  daemon_reload: no
   #  state: started
   #  name: chronyd
   #  enabled: yes
-  become: yes
+  become: true
   become_method: sudo
 
 - name: Timedatectl
   command: timedatectl set-ntp true
-  become: yes
+  become: true
   become_method: sudo

@@ -1,5 +1,9 @@
 ---
 
+- include_tasks: 00-update_packs.yaml
+  #vars:
+  #  packages: 'timedatectl,firewalld,chrony,nfs-utils,nfs4-acl-tools,wget'
+
 - include_tasks: 01-timezone.yaml
 - include_tasks: 02-selinux.yaml
   vars:

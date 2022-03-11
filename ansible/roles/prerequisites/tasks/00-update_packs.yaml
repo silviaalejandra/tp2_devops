@@ -1,0 +1,27 @@
+---
+#- name: debug install
+#  debug:
+#    var: packages
+
+#- name: packages list
+#  set_fact:
+#     list_packages: "{{ packages.split(',') }}"
+#  when: packages is defined
+
+#- name: debug packages list
+#  debug:
+#    var: list_packages
+
+- name: DNF update the system
+  dnf: 
+#    name: '{{ item }}'            
+    name: "*"
+    state: latest
+  #when: ansible_facts['os_family'] == 'RedHat' and ansible_facts  ['distribution_major_version'] >= '8'
+  become: true
+  become_method: sudo
+  #loop: "{{ list_packages }}"     #
+  #when: list_packages is defined  #
+
+#TASK [prerequisites : DNF update the system] ***************************************************************************
+#fatal: [master.silgonza.ar]: FAILED! => {"changed": false, "failures": [], "msg": "Unknown Error occured: centos-repos(8) conflicts with (installed) centos-stream-repos-8-4.el8.noarch", "rc": 1, "results": []}

@@ -30,7 +30,7 @@ inTerOption=${1}
 inAnsOption=${2}
 strDate=`date "+%Y%m%d%H%M%S"`
 strActualDir=`pwd`
-strLog="startdeploy$strDate.log"
+export strLog="startdeploy$strDate.log"
 
 exec > >(tee ${strLog} 2>&1)
 
@@ -184,7 +184,9 @@ cd $strActualDir/ansible
 . ./controller.sh
 
 echo `date "+%d/%m/%Y %H:%M:%S"`": valido las conexiones entre nodos"
+#export ANSIBLE_HOST_KEY_CHECKING=False
 ansible -i hosts -m ping all
+#ansible -i hosts -m ping all --ssh-common-args='-o StrictHostKeyChecking=no'
 
 # regreso al dir origen
 cd $strActualDir

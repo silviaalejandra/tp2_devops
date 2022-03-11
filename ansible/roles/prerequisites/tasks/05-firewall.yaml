@@ -6,7 +6,8 @@
     state: present
     update_cache: yes
   register: result
-  become: yes
+  become: true
+  become_method: sudo
 
 - name: inactive AllowZoneDrifting
   lineinfile:
@@ -14,28 +15,28 @@
     regexp: 'AllowZoneDrifting.*'
     line: 'AllowZoneDrifting:no'
     state: present
-  become: yes
+  become: true
   become_method: sudo
 
 - name: enable firewall
-  command: systemctl enable firewalld
-  #service:
-  #     name: firewalld
-  #     state: started
-  #     enabled: True
+  #command: systemctl enable firewalld
+  service:
+       name: firewalld
+       state: started
+       enabled: True
   #systemd:
   #  name: firewalld
   #  daemon_reload: yes
   #  state: started
   #  enabled: yes
-  become: yes
+  become: true
   become_method: sudo
 
 - name: start firewall
-  command: systemctl start firewalld
-#  systemd:
-#    name: firewalld
-#    daemon_reload: no
-#    state: started
-  become: yes
+  #command: systemctl start firewalld
+  systemd:
+    name: firewalld
+    daemon_reload: no
+    state: started
+  become: true
   become_method: sudo

@@ -3,13 +3,13 @@
   debug:
     var: packages
 
-- name: DNF update the system
-  dnf: 
-    name: "*"
-    state: latest
-  #when: ansible_facts['os_family'] == 'RedHat' and ansible_facts  ['distribution_major_version'] >= '8'
-  become: yes
-  become_method: sudo
+#- name: DNF update the system
+#  dnf: 
+#    name: "*"
+#    state: latest
+#  #when: ansible_facts['os_family'] == 'RedHat' and ansible_facts  ['distribution_major_version'] >= '8'
+#  become: true
+#  become_method: sudo
 
 - name: packages list
   set_fact:
@@ -21,12 +21,13 @@
     var: list_packages
 
 - name: "install {{ item }}"
-  command: dnf install {{ item }} -y # dnf arroja error con la lista
-  #dnf: 
-  #  name: '{{ item }}'
-  #  state: present
-  #  update_cache: yes
+  #command: dnf install {{ item }} -y # dnf arroja error con la lista
+  dnf: 
+    name: '{{ item }}'
+    state: present
+    update_cache: yes
   register: result
-  become: yes
+  become: true
+  become_method: sudo
   loop: "{{ list_packages }}"
   when: list_packages is defined

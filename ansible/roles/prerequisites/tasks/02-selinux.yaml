@@ -1,6 +1,6 @@
 ---
 - name: active inactive SELinux
-  become: yes
+  become: true
   become_method: sudo
   #  selinux_status: disabled # El estado puede ser disabled | enforcing
   selinux:

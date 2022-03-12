@@ -1,0 +1,40 @@
+---
+#Para que el usuario con admin pueda utilizar kubectl para operar el
+# cluster bastaría con ejecutar:
+- name: populate /etc/environment
+  lineinfile:
+    dest: "/etc/environment"
+    state: present
+    regexp: "KUBECONFIG="
+    line: " KUBECONFIG=/etc/kubernetes/admin.conf"
+  become: true
+  become_method: sudo
+
+#Vamos a autorizar al usuario admin acceder al cluster para terminar
+# la configuración de la forma habitual con la que lo haremos para
+# el resto de usuarios:
+- name: Creo directorios $HOME/.kube
+  file:
+    path: $HOME/.kube
+    state: directory
+  become: true
+  become_method: sudo
+
+- name: Copio archivo configuracion
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: $HOME/.kube/config
+    remote_src: yes
+    owner: root
+    group: root
+  become: true
+  become_method: sudo
+
+- name: Obtengo las imagenes de Kubeadmn
+  command: 'kubectl get nodes'
+  register: result
+  become: true
+  become_method: sudo
+
+- debug:
+    msg: 'Lista de nodos: {{ result }}'

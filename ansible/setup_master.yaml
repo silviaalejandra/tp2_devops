@@ -4,11 +4,11 @@
 #  strategy: debug
   vars_files:
     - 'group_vars/kube.yaml'
-    - 'group_vars/v_host.yaml'
+    - 'group_vars/v_host.yaml'  
   gather_facts: false
   roles:
     - role: prerequisites
-    #- role: init_k8snodes
-    #  vars:
-    #    swap_status: 'no'
-    #- role: install_master
+    - role: init_k8snodes
+      vars:
+        swap_status: 'no'
+    - role: init_master

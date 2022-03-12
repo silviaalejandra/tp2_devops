@@ -36,7 +36,25 @@
   shell: sysctl -p --system
   become: true
   become_method: sudo
-  when: result.changed
+  #when: result.changed
+
+- name: restart firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
+  become: true
+  become_method: sudo
+
+#Configuramos los puertos para SDN Azure
+- name: puertos SDN Azure
+  firewalld:
+    port: "{{ item }}/udp"
+    permanent: yes
+    state: enabled
+    zone: public
+  loop: '{{ ports_nodes }}'
+  become: true
+  become_method: sudo
 
 - name: restart firewalld
   systemd:

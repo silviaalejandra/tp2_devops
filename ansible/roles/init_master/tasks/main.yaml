@@ -1,0 +1,8 @@
+---
+
+- include_tasks: 01-config_firewall.yaml
+- include_tasks: 02-admin_kubeadm.yaml
+- include_tasks: 03-Habilito_kube_root.yaml
+- include_tasks: 04-azure_SDN.yaml
+- include_tasks: 05-install_ingress.yaml
+- include_tasks: 06-restar_host.yaml

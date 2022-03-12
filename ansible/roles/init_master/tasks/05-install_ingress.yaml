@@ -1,0 +1,33 @@
+---
+- name: Instalo ingress
+  command: 'kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/master/deploy/haproxy-ingress.yaml'
+  register: result
+  become: true
+  become_method: sudo
+
+- name: Obtengo los namespace
+  command: 'kubectl get namespaces'
+  register: result
+  become: true
+  become_method: sudo
+
+- debug:
+    msg: 'Obtengo los namespaces : {{ result }}'
+
+- name: Obtenemos detalle del namespace creado
+  command: 'kubectl get pods --namespace=haproxy-controller'
+  register: result
+  become: true
+  become_method: sudo
+
+- debug:
+    msg: 'Obtenemos detalle del namespace creado : {{ result }}'
+
+- name: Listo los servicios
+  command: 'kubectl get svc -A'
+  register: result
+  become: true
+  become_method: sudo
+
+- debug:
+    msg: 'Obtenemos detalle del namespace creado : {{ result }}'

@@ -1,3 +1,4 @@
 ---
 
 swap_status: 'no'
+ports_nodes : ['8285','8472']

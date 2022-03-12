@@ -1,0 +1,39 @@
+---
+#https://docs.projectcalico.org/getting-started/kubernetes/flannel/flannel
+#https://github.com/flannel-io/flannel/blob/master/Documentation/troubleshooting.md
+
+#Deberemos verificar que en el master el controller manager está desplegado con
+# las opciones --cluster-cidr= y --allocate-node-cidrs=true. La instalación por
+# defecto lo hace:
+# - name: Aplico configuracion custom-resources.yaml
+#  command: "ps a | grep allocate-node"
+#  register: result
+#  become: true
+#  become_method: sudo
+
+- name: Aplico configuracion custom-resources.yaml
+  command: "ps -ax"
+  register: result
+  become: true
+  become_method: sudo
+
+- name: Obtengo los ficheros
+  command: 'kubectl apply -f https://docs.projectcalico.org/manifests/canal.yaml'
+  register: result
+  become: true
+  become_method: sudo
+
+- name: Obtengo los nodos
+  command: 'kubectl get nodes'
+  register: result
+  become: true
+  become_method: sudo
+
+- name: Obtengo los pods
+  command: 'kubectl get pods -A -o wide'
+  register: result
+  become: true
+  become_method: sudo
+
+#- debug:
+#    msg: 'Lista de nodos: {{ result }}'

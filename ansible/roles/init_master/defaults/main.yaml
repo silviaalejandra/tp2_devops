@@ -1,0 +1,8 @@
+---
+#6443       kubernetes API Server       All
+#2379-2380  etcd server client API      kube-apiserver, etcd 
+#10250      Kubelet API                 self, Control Plane
+#10251      kube-scheduler              self
+#10252      kube-controller-manager     self
+#10255      Statistic                   Master nodes
+ports_workers : ['6443','2379-2380','10250','10251','10252','10255']

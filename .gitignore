@@ -3,7 +3,7 @@
 *.old
 *.log
 terraform/.terraform.lock.hcl
-terraform/credentials.tf
+*credentials.tf
 terraform/main.tfplan
 terraform/main.tfdestroy
 terraform/terraform.tfstate
@@ -11,3 +11,4 @@ terraform/terraform.tfstate.backup
 terraform/storage_size.txt
 terraform/salia.txt
 *join-command
+*v_host.yaml

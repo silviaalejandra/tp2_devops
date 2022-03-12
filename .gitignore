@@ -10,3 +10,4 @@ terraform/terraform.tfstate
 terraform/terraform.tfstate.backup
 terraform/storage_size.txt
 terraform/salia.txt
+ansible/roles/init_workers/files/join-command

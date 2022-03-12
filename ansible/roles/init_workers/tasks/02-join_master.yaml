@@ -1,0 +1,33 @@
+---
+#- name: Copy the join command to server location
+#  copy: src=join-command dest=/tmp/join-command.sh mode=0777
+
+#Copiamos el comando de unir nodos
+- name: Copy the join command to server location
+  copy:
+    src: 'join-command'
+    dest: '/tmp/join-command.sh'
+    mode: 0777
+  become: true
+  become_method: sudo
+
+- name: Join the node to cluster
+  command: sh /tmp/join-command.sh
+  become: true
+  become_method: sudo
+
+- name: Espera 30 segundos
+  wait_for:
+    timeout: 30
+  #delegate_to: localhost
+  become: true
+  become_method: sudo
+
+- name: Reviso los nodos
+  command: 'ip a'
+  register: result
+  become: true
+  become_method: sudo
+
+- debug:
+    msg: 'Obtengo resultado de union : {{ result }}'

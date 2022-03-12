@@ -15,12 +15,24 @@
     msg: 'Pull imagenes: {{ result }}'
 
 #Instalamos el plugin CNI (Container Network Interface) de kubernetes y
-# definimos la red de los PODs:
+ definimos la red de los PODs:
 - name: Container Network Interface
   command: 'kubeadm init --pod-network-cidr {{ master_range_ip }}'
-  register: result2
+  register: varinterface
   become: true
   become_method: sudo
 
 - debug:
-    msg: '{{ result2 }}'
+    msg: '{{ varinterface }}'
+
+#Genero comando para unir nodos y lo bajo a un archivo
+- name: Generate join command
+  command: 'kubeadm token create --print-join-command'
+  register: join_command
+  become: true
+  become_method: sudo
+
+- name: Copy join command to local file
+  local_action: copy content="{{ join_command.stdout_lines[0] }}" dest="./roles/init_workers/files/join-command"
+  become: true
+  become_method: sudo

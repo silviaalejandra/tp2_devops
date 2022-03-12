@@ -1,0 +1,5 @@
+---
+
+- include_tasks: 01-config_firewall.yaml
+- include_tasks: 02-join_master.yaml
+- include_tasks: 03-restar_host.yaml

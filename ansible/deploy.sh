@@ -22,6 +22,6 @@ exec > >(tee ${strLog} 2>&1)
 
 # ejecuto
 echo `date "+%d/%m/%Y %H:%M:%S"`": Inicia seteo de nodos"
-#. ./nfs.sh
+. ./nfs.sh
 . ./master.sh
 . ./workers.sh

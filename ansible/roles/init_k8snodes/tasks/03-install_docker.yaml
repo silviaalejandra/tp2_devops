@@ -43,12 +43,12 @@
 
 #- name: Reiniciamos el servicio de docker
 #  ansible.builtin.service:
-#    name: firewalld
+#    name: docker
 #    state: restarted
 
 # No toma el reinicio con systemd
 - name: Reiniciamos el servicio de docker
-  command: systemctl restart firewalld
+  command: systemctl restart docker
   register: result
   become: true
   become_method: sudo

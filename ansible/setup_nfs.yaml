@@ -7,5 +7,5 @@
     - 'group_vars/v_host.yaml'
   gather_facts: false
   roles:
-    - role: prerequisites
+    #- role: prerequisites
     - role: init_nfs

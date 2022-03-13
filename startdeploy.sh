@@ -30,7 +30,7 @@ inTerOption=${1}
 inAnsOption=${2}
 strDate=`date "+%Y%m%d%H%M%S"`
 strActualDir=`pwd`
-export strLog="startdeploy$strDate.log"
+strLog="startdeploy$strDate.log"
 
 exec > >(tee ${strLog} 2>&1)
 
@@ -62,7 +62,8 @@ then
 	# regreso al dir origen
 	cd $strActualDir
 	#exit 0
-	echo 0
+	strLog=""
+	#echo 0
 	return
 else 
 	if [ "$inTerOption" = "A" ]
@@ -88,6 +89,7 @@ else
 		else 
 			echo `date "+%d/%m/%Y %H:%M:%S"`": Opcion terraform incorrecta. Verifique y vuelva a intentar"
 			#exit 1
+			strLog=""
 			return
 		fi
 	fi
@@ -165,11 +167,13 @@ cd $strActualDir
 if [ "$inAnsOption" = "S" ]
 then
 	echo `date "+%d/%m/%Y %H:%M:%S"`": Fin de tareas - No se ejecuta ansible"
+	strLog=""
 	return
 else 
 	if [ "$inAnsOption" != "A" ]
 	then
 		echo `date "+%d/%m/%Y %H:%M:%S"`": Opcion ansible incorrecta. Verifique y vuelva a intentar"
+		strLog=""
 		#exit 1
 		return
 	fi
@@ -200,4 +204,5 @@ cd $strActualDir/ansible
 
 # regreso al dir origen
 cd $strActualDir
+strLog=""
 #return 

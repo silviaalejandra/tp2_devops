@@ -11,7 +11,7 @@
 
 - include_tasks: 03-install_packs.yaml
   vars:
-    packages: 'nfs-utils,nfs4-acl-tools,wget'
+    packages: 'nfs-utils,nfs4-acl-tools,wget,telnet'
     
 - include_tasks: 04-hosts.yaml
 - include_tasks: 05-firewall.yaml

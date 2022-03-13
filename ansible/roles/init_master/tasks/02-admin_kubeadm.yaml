@@ -15,7 +15,7 @@
     msg: 'Pull imagenes: {{ result }}'
 
 #Instalamos el plugin CNI (Container Network Interface) de kubernetes y
- definimos la red de los PODs:
+#" definimos la red de los PODs:
 - name: Container Network Interface
   command: 'kubeadm init --pod-network-cidr {{ master_range_ip }}'
   register: varinterface

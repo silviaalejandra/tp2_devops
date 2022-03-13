@@ -34,9 +34,21 @@
   become: true
   become_method: sudo
 
+#- name: Reiniciamos el servicio de docker
+#  systemd:
+#    name: 'docker'
+#    state: reloaded
+#  become: true
+#  become_method: sudo
+
+#- name: Reiniciamos el servicio de docker
+#  ansible.builtin.service:
+#    name: firewalld
+#    state: restarted
+
+# No toma el reinicio con systemd
 - name: Reiniciamos el servicio de docker
-  systemd:
-    name: 'docker'
-    state: reloaded
+  command: systemctl restart firewalld
+  register: result
   become: true
   become_method: sudo

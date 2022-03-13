@@ -77,7 +77,7 @@ resource "azurerm_public_ip" "public_ip_b" {
   count               = length(var.vm_count_b)
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  allocation_method   = "Static"
+  allocation_method   = "Dynamic"
   sku                 = "Basic"
 
     tags = {

@@ -1,4 +1,12 @@
 ---
+# Se instala iproute por error "tc not found in system path"
+- name: Instalo IpRoute
+  dnf:
+    name: 'iproute-tc'
+    state: present
+  become: true
+  become_method: sudo
+
 #- name: Copy the join command to server location
 #  copy: src=join-command dest=/tmp/join-command.sh mode=0777
 

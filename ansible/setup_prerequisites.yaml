@@ -1,0 +1,10 @@
+---
+
+- hosts: updatepaqs
+#  strategy: debug
+  vars_files:
+    #- 'group_vars/kube.yaml'
+    - 'group_vars/v_host.yaml'  
+  gather_facts: false
+  roles:
+    - role: prerequisites

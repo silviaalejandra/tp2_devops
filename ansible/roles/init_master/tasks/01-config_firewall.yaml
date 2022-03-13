@@ -34,11 +34,17 @@
   become: true
   become_method: sudo
 
-- name: restart firewalld
-  systemd:
-    name: firewalld
-    state: reloaded
-  become: true
+#- name: restart firewalld
+#  systemd:
+#    name: firewalld
+#    state: reload
+#  become: true
+#  become_method: sudo
+
+- name: Reiniciamos el servicio de firewall
+  command: systemctl restart firewalld
+  register: result
+  become: yes
   become_method: sudo
 
 - name: restart docker

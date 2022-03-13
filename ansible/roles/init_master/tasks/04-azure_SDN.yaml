@@ -11,6 +11,15 @@
 #  become: true
 #  become_method: sudo
 
+- name: populate /etc/environment
+  lineinfile:
+    dest: "/etc/environment"
+    state: present
+    regexp: "KUBECONFIG="
+    line: " KUBECONFIG=/etc/kubernetes/admin.conf"
+  become: true
+  become_method: sudo
+
 - name: Aplico configuracion custom-resources.yaml
   command: "ps -ax"
   register: result

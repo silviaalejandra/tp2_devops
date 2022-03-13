@@ -12,3 +12,4 @@ terraform/storage_size.txt
 terraform/salia.txt
 *join-command
 *v_host.yaml
+ansible/group_vars/v_host.yaml

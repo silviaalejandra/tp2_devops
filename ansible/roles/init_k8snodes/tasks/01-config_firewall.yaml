@@ -38,10 +38,16 @@
   become_method: sudo
   #when: result.changed
 
-- name: restart firewalld
-  systemd:
-    name: firewalld
-    state: reloaded
+#- name: restart firewalld
+#  systemd:
+#    name: firewalld
+#    state: reloaded
+#  become: true
+#  become_method: sudo
+
+- name: Reiniciamos el servicio de firewall
+  command: systemctl restart firewalld
+  register: result
   become: true
   become_method: sudo
 
@@ -56,14 +62,19 @@
   become: true
   become_method: sudo
 
-- name: restart firewalld
-  systemd:
-    name: firewalld
-    state: reloaded
-  become: true
-  become_method: sudo
+#- name: restart firewalld
+#  systemd:
+#    name: firewalld
+#    state: reloaded
+#  become: true
+#  become_method: sudo
 
 #- name: restart firewall
 #  shell: firewall-cmd --reload
 #  become: true
 #  become_method: sudo
+- name: Reiniciamos el servicio de firewall
+  command: systemctl restart firewalld
+  register: result
+  become: true
+  become_method: sudo

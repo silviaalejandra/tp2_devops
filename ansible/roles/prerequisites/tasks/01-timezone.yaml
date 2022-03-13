@@ -13,17 +13,31 @@
   become: true
   become_method: sudo
 
+- name: enable chronyd
+  #command: systemctl enable firewalld
+  service:
+       name: chronyd
+       state: started
+       enabled: True
+  #systemd:
+  #  name: firewalld
+  #  daemon_reload: yes
+  #  state: started
+  #  enabled: yes
+  become: true
+  become_method: sudo
+
 - name: Start Chrony
   #command: systemctl enable chronyd
-  service:
-      name: chronyd
-      state: started #reloaded, restarted, started, stopped
-      enabled: True
-  #ansible.builtin.systemd:
-  #  daemon_reload: no
-  #  state: started
-  #  name: chronyd
-  #  enabled: yes
+  #service:
+  #    name: chronyd
+  #    state: started #reloaded, restarted, started, stopped
+  #    enabled: True
+  ansible.builtin.systemd:
+    daemon_reload: no
+    state: started
+    name: chronyd
+    enabled: yes
   become: true
   become_method: sudo
 

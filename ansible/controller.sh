@@ -17,7 +17,7 @@ then
 fi
 
 # controlo salida por pantalla y log
-exec > >(tee ${strLog} 2>&1)
+# exec > >(tee ${strLog} 2>&1)
 
 echo `date "+%d/%m/%Y %H:%M:%S"`": Inicia seteo de controlador con ansible"
 ansible-playbook -i hosts -l controller setup_controller.yaml -v #--ssh-common-args='-o StrictHostKeyChecking=no'

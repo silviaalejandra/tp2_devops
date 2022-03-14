@@ -2,6 +2,8 @@
 
 - hosts: updatepaqs
 #  strategy: debug
+  #para que no espere por los otros la ejecucion de siguiente tareas
+  strategy: free
   vars_files:
     #- 'group_vars/kube.yaml'
     - 'group_vars/v_host.yaml'  

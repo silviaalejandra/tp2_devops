@@ -17,8 +17,8 @@ then
 fi
 
 # controlo salida por pantalla y log
-exec > >(tee ${strLog} 2>&1)
+# exec > >(tee ${strLog} 2>&1)
 
 echo `date "+%d/%m/%Y %H:%M:%S"`": Inicia seteo de pre requisitos en nodos que aplica"
 ansible-playbook -i hosts -l updatepaqs setup_prerequisites.yaml -v #--ssh-common-args='-o StrictHostKeyChecking=no'
-echo `date "+%d/%m/%Y %H:%M:%S"`": Finaliza seteo de pre requisitos en nodos que aplica""
+echo `date "+%d/%m/%Y %H:%M:%S"`": Finaliza seteo de pre requisitos en nodos que aplica"

@@ -15,7 +15,7 @@ then
 fi
 
 # controlo salida por pantalla y log
-exec > >(tee ${strLog} 2>&1)
+# exec > >(tee ${strLog} 2>&1)
 
 # Copio el archivo var_hosts desde el controller
 # que fue creado con la info de terraform

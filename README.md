@@ -106,6 +106,7 @@ tp2_devops
 # Requisitos y restricciones
 Se entiende como **entorno de trabajo** al equipo desde el cual se ejecutarán todos los ficheros que componen la instalación descripta
 Se entiende como **entorno cloud** a la suscripción de Azure que debe estar diponible para la instalación.
+
 ## Entorno de trabajo
 Se detallan a continuacion las características del equipo entorno de trabajo desde el cual se lanzarán las ejecuciones.
 SO Ubuntu 20.04.3 LTS (GNU/Linux 5.10.16.3-microsoft-standard-WSL2 x86_64)
@@ -169,6 +170,15 @@ $ sudo sh requisitos.sh <userServicio>
 <p align="center">
   <img src="images/01.05.step.jpg" />
 </p>
+
+6 - Finalizada la instalacion debemos ingresar con el usuario creado. La contraseña será el mismo nombre de usuario. Allí crearemos una llave ssh para conectarnos con las VM de Azure. Esta llave la colocaremos en un directorio dentro de /terraform/.ssh para su uso por las VM.
+
+```
+$ su <userServicio>
+$ cd $HOME
+$ ssh-keygen -t rsa -b 4096
+$ sudo cp ~/.ssh/id_rsa 
+```
 
 .
 ├── README.md

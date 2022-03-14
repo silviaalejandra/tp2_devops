@@ -34,68 +34,7 @@ strLog="startdeploy_$strDate.log"
 
 exec > >(tee ${strLog} 2>&1)
 
-
-
-echo "Inico de Ejecucion. " `date "+%d/%m/%Y a las %H:%M:%S hs"`
-# Entrada
-echo `date "+%d/%m/%Y %H:%M:%S"`": Opcion terraform = $inTerOption"
-echo `date "+%d/%m/%Y %H:%M:%S"`": Opcion ansible = $inAnsOption"
-echo `date "+%d/%m/%Y %H:%M:%S"`": Directorio de trabajo: $strActualDir"
-
-#***************************************** TERRAFORM ******#
-# Se realiza el despliegue o eliminacion de la infra
-# con planes terraform
-#***************************************** TERRAFORM ******#
-if [ "$inTerOption" = "D" ]
-then
-	# Plan and destroy
-	echo `date "+%d/%m/%Y %H:%M:%S"`": terraform destroy"
-	
-	# me muevo al directorio de terraform para trabajar
-	cd terraform
-	terraform plan -destroy -out=main.tfdestroy
-	terraform apply main.tfdestroy
-	echo `date "+%d/%m/%Y %H:%M:%S"`": terraform fin"
-	
-	#echo `date "+%d/%m/%Y %H:%M:%S"`": elimino configuraciones asociadas para ansible"
-	#rm -f $fileHosts || true
-	# regreso al dir origen
-	cd $strActualDir
-	#exit 0
-	strLog=""
-	#echo 0
-	return
-else 
-	if [ "$inTerOption" = "A" ]
-	then
-		# Initialise the configuration
-		echo `date "+%d/%m/%Y %H:%M:%S"`": terraform init"
-		
-		# me muevo al directorio de terraform para trabajar
-		cd terraform
-		terraform init -input=false
-		# Plan and deploy
-		echo `date "+%d/%m/%Y %H:%M:%S"`": terraform plan y deploy"
-		terraform plan -input=false -out=main.tfplan
-		terraform apply main.tfplan
-		echo `date "+%d/%m/%Y %H:%M:%S"`": terraform fin"
-		
-		# regreso al dir origen
-		cd $strActualDir
-	else
-		if [ "$inTerOption" = "S" ]
-		then
-			echo `date "+%d/%m/%Y %H:%M:%S"`": No se ejecuta terraform"
-		else 
-			echo `date "+%d/%m/%Y %H:%M:%S"`": Opcion terraform incorrecta. Verifique y vuelva a intentar"
-			#exit 1
-			strLog=""
-			return
-		fi
-	fi
-fi
-
-
+fnSetupLocal () {
 #***************************************** SETUP LOCAL ******#
 # Se realizan las tareas de setup local del equipo en el cual 
 # se debe ejecutar los playbook de ansible
@@ -163,6 +102,69 @@ done
 
 # regreso al dir origen
 cd $strActualDir
+}
+
+
+
+echo "Inico de Ejecucion. " `date "+%d/%m/%Y a las %H:%M:%S hs"`
+# Entrada
+echo `date "+%d/%m/%Y %H:%M:%S"`": Opcion terraform = $inTerOption"
+echo `date "+%d/%m/%Y %H:%M:%S"`": Opcion ansible = $inAnsOption"
+echo `date "+%d/%m/%Y %H:%M:%S"`": Directorio de trabajo: $strActualDir"
+
+#***************************************** TERRAFORM ******#
+# Se realiza el despliegue o eliminacion de la infra
+# con planes terraform
+#***************************************** TERRAFORM ******#
+if [ "$inTerOption" = "D" ]
+then
+	# Plan and destroy
+	echo `date "+%d/%m/%Y %H:%M:%S"`": terraform destroy"
+	
+	# me muevo al directorio de terraform para trabajar
+	cd terraform
+	terraform plan -destroy -out=main.tfdestroy
+	terraform apply main.tfdestroy
+	echo `date "+%d/%m/%Y %H:%M:%S"`": terraform fin"
+	
+	#echo `date "+%d/%m/%Y %H:%M:%S"`": elimino configuraciones asociadas para ansible"
+	#rm -f $fileHosts || true
+	# regreso al dir origen
+	cd $strActualDir
+	#exit 0
+	strLog=""
+	#echo 0
+	return
+else 
+	if [ "$inTerOption" = "A" ]
+	then
+		# Initialise the configuration
+		echo `date "+%d/%m/%Y %H:%M:%S"`": terraform init"
+		
+		# me muevo al directorio de terraform para trabajar
+		cd terraform
+		terraform init -input=false
+		# Plan and deploy
+		echo `date "+%d/%m/%Y %H:%M:%S"`": terraform plan y deploy"
+		terraform plan -input=false -out=main.tfplan
+		terraform apply main.tfplan
+		echo `date "+%d/%m/%Y %H:%M:%S"`": terraform fin"
+		
+		fnSetupLocal
+		# regreso al dir origen
+		cd $strActualDir
+	else
+		if [ "$inTerOption" = "S" ]
+		then
+			echo `date "+%d/%m/%Y %H:%M:%S"`": No se ejecuta terraform"
+		else 
+			echo `date "+%d/%m/%Y %H:%M:%S"`": Opcion terraform incorrecta. Verifique y vuelva a intentar"
+			#exit 1
+			strLog=""
+			return
+		fi
+	fi
+fi
 
 if [ "$inAnsOption" = "S" ]
 then

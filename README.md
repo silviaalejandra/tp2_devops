@@ -195,217 +195,69 @@ $ sudo cp ~/.ssh/id_rsa.pub $HOME/<userServicio>/tp2_devops/terraform/.ssh/id_rs
   <img src="images/01.07.2.step.jpg" />
 </p>
 
+## Entorno cloud
+Se detallan a continuacion los requisitos y restricciones del uso de un entorno Azure con licencia limitada o gratuita
 
+El objetivo final de este desploegue de infraestructura será de 3 VMs  con su respectiva configuraciond e red para poder accederlas e instalar Kubernetes.
+>IMPORTANTE: Para el despliegue de un cluster, los requistos deseables son los siguientes
+>
+>| Role | vCPUs | Memoria (GiB) | Disco Duro |
+>|------|-------------------|-------|---------------|------------|
+>| NFS | 2 | 4 | 1 x 20 GiB (boot) |
+>| Master | 2 | 8 | 1 x 20 GiB (boot) |
+>| Worker | 2 | 4 | 1 x 20 GiB (boot) |
+>| Worker | 2 | 4 | 1 x 20 GiB (boot) |
+>
+>Por restricciones de la cuenta no es posible utilizar más de 7 vCPUs con lo cual se creará un cluster con solo un nodo Worker, ya que Kubeadm no corre en menos de 2 vCPU
 
-.
-├── README.md
-├── ansible
-│   ├── LICENSE
-│   ├── app_argocd.sh
-│   ├── app_argocd.yaml
-│   ├── controller.sh
-│   ├── deploy.sh
-│   ├── group_vars
-│   │   ├── kube.yaml
-│   │   ├── template_vars_host
-│   │   └── v_host.yaml
-│   ├── hosts
-│   ├── master.sh
-│   ├── nfs.sh
-│   ├── prerequisites.sh
-│   ├── roles
-│   │   ├── argocd
-│   │   │   ├── defaults
-│   │   │   │   └── main.yaml
-│   │   │   ├── files
-│   │   │   │   ├── 01-customresource.yaml
-│   │   │   │   ├── 02-service_account.yaml
-│   │   │   │   ├── 03-roles.yaml
-│   │   │   │   ├── 04-configmap.yaml
-│   │   │   │   ├── 05-secret.yaml
-│   │   │   │   ├── 06-service.yaml
-│   │   │   │   ├── 07-deployment.yaml
-│   │   │   │   ├── 08-statefullset.yaml
-│   │   │   │   ├── 09-network.yaml
-│   │   │   │   └── argodeployment.yaml
-│   │   │   └── tasks
-│   │   │       ├── 01-namespace.yaml
-│   │   │       ├── 02-setup_files.yaml
-│   │   │       ├── 03-config_firewall.yaml
-│   │   │       ├── 04-install_argocd.yaml
-│   │   │       └── main.yaml
-│   │   ├── init_controller
-│   │   │   ├── defaults
-│   │   │   │   └── main.yaml
-│   │   │   ├── tasks
-│   │   │   │   ├── 01-setup_controller.yaml
-│   │   │   │   └── main.yaml
-│   │   │   └── vars
-│   │   │       └── template_vars_host
-│   │   ├── init_k8snodes
-│   │   │   ├── defaults
-│   │   │   │   └── main.yaml
-│   │   │   ├── files
-│   │   │   │   ├── daemon.json
-│   │   │   │   ├── k8s.conf
-│   │   │   │   └── kubernetes.repo
-│   │   │   └── tasks
-│   │   │       ├── 01-config_firewall.yaml
-│   │   │       ├── 02-swap.yaml
-│   │   │       ├── 03-install_docker.yaml
-│   │   │       ├── 04-kube.yaml
-│   │   │       └── main.yaml
-│   │   ├── init_master
-│   │   │   ├── defaults
-│   │   │   │   └── main.yaml
-│   │   │   └── tasks
-│   │   │       ├── 01-config_firewall.yaml
-│   │   │       ├── 02-admin_kubeadm.yaml
-│   │   │       ├── 03-Habilito_kube_root.yaml
-│   │   │       ├── 04-azure_SDN.yaml
-│   │   │       ├── 05-install_ingress.yaml
-│   │   │       ├── 06-restar_host.yaml
-│   │   │       └── main.yaml
-│   │   ├── init_nfs
-│   │   │   └── tasks
-│   │   │       ├── 01-install_packages.yaml
-│   │   │       ├── 02-config_firewall.yaml
-│   │   │       └── main.yaml
-│   │   ├── init_workers
-│   │   │   ├── defaults
-│   │   │   │   └── main.yaml
-│   │   │   ├── files
-│   │   │   │   └── README
-│   │   │   └── tasks
-│   │   │       ├── 01-config_firewall.yaml
-│   │   │       ├── 02-join_master.yaml
-│   │   │       ├── 03-restar_host.yaml
-│   │   │       └── main.yaml
-│   │   └── prerequisites
-│   │       ├── defaults
-│   │       │   └── main.yaml
-│   │       └── tasks
-│   │           ├── 00-update_packs.yaml
-│   │           ├── 01-timezone.yaml
-│   │           ├── 02-selinux.yaml
-│   │           ├── 03-install_packs.yaml
-│   │           ├── 04-hosts.yaml
-│   │           ├── 05-firewall.yaml
-│   │           └── main.yaml
-│   ├── setup_controller.yaml
-│   ├── setup_master.yaml
-│   ├── setup_nfs.yaml
-│   ├── setup_prerequisites.yaml
-│   ├── setup_worker.yaml
-│   └── workers.sh
-├── images
-│   └── 01.02.step.jpg
-├── requisitos.sh
-├── startdeploy.sh
-└── terraform
-    ├── LICENSE
-    ├── correccion-vars.tf
-    ├── credentials.tf
-    ├── generate_inv.sh
-    ├── inventory.py
-    ├── main.tf
-    ├── network.tf
-    ├── output.tf
-    ├── resolv_correction.yml
-    ├── security.tf
-    ├── variables.tf
-    ├── vm.tf
-    ├── vmb.tf
-    └── vmc.tf
+01 - Obtener id de suscripcion y crear un service principal
+	Ingresar a la cuenta de Azure y navegar hasta la opcion *Suscripcion*. Tomar el valor *Id. de la suscripcion*
 
+<p align="center">
+  <img src="images/02.01.jpg" />
+</p>
 
-
-
-
-
-
-# TP2_Devops
-
-## Nodo Master
-
-Nodo ubuntu local con user silgonza por defecto el cual accionará de maestro.
-Se instalan herramientas y se crea el usuario ansible.
-Se instala server ssh.
-```
-silgonza@DESKTOP-G427733:~$ sudo apt install chrony
-silgonza@DESKTOP-G427733:~$ sudo service chrony start
-silgonza@DESKTOP-G427733:~$ sudo adduser --home /home/ansible ansible
-silgonza@DESKTOP-G427733:~$ sudo passwd ansible
-silgonza@DESKTOP-G427733:~$ sudo apt install python3 -
-silgonza@DESKTOP-G427733:~$ sudo apt install git
-silgonza@DESKTOP-G427733:~$ sudo apt install ansible
-silgonza@DESKTOP-G427733:~/tp2_devops/ansible$ sudo apt install openssh-server
-silgonza@DESKTOP-G427733:~/tp2_devops/ansible$ sudo service ssh status
-silgonza@DESKTOP-G427733:~/tp2_devops/ansible$ sudo service ssh start
-```
-
-Se crea el par de llaves para la conexion SSH local.
-```
-ansible@DESKTOP-G427733:~/.ssh$ ssh-keygen -t rsa -b 4096`
-```
-Y se copia el .pub generado al usuario silgonza como fichero ~/.ssh/authorized_keys
-
-## Nodo Esclavo
-
-Se crea usuario ansible.
-```
-[centos@ip-172-31-89-245 home]$ sudo adduser -md /home/ansible ansible
-[centos@ip-172-31-89-245 home]$ sudo passwd ansible
-[centos@ip-172-31-89-245 home]$ su ansible
-[ansible@ip-172-31-89-245 ~]$ mkdir /home/ansible/.ssh
-[ansible@ip-172-31-89-245 ~]$ chmod 700 .ssh
+Instalar en el entorno de trabajo el cliente Azure Cli de acuerdo a las [instrucciones del proveedor Microsoft](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+	
+Ingrear a PowerShell y ejecutar a creacion de un service principal. Este service será una especie de usuario de servicio dentro del entorno cloud
 
 ```
-
-Se instalan herramientas. Chrony ya viene con la imágen de Centos elegida para AWS (Utilizada para la prueba)
-Las imágenes centos de AWS fueron seleccionadas por recomendacion desde https://wiki.centos.org/Cloud/AWS
-```
-centos@ip-172-31-89-245 home]$ sudo systemctl enable chronyd
-centos@ip-172-31-89-245 home]$ sudo yum install python3 -y
-centos@ip-172-31-89-245 home]$ sudo yum install git ansible -y
+az login
+az account set --subscription=<SUBSCRIPTION_ID>
+az ad sp create-for-rbac --role="Contributor"
 ```
 
-Para el caso de AWS, al trabajar en el lab del caso práctico1, se reutiliza el par de claves que se carga al generar la imágen (vockey), con lo cual se copia en el usr ansible previamente creado el fichero .ssh/authorized_keys del usuario centos.
+El resultado será similar al siguiente (se protegen datos de la suscripcion de ejemplo)
 ```
-[centos@ip-172-31-89-245 .ssh]$ sudo cp authorized_keys /home/ansible/.ssh/authorized_keys
-[centos@ip-172-31-89-245 .ssh]$ sudo chown ansible:ansible /home/ansible/.ssh/authorized_keys
-```
-
-Se da permisos al usuario ansible haciendo copia del archivo que trae por defecto la imágen para otorgar permisos al usuario centos
-```
-[root@ip-172-31-82-119 sudoers.d]# cp 90-cloud-init-users ansible
-[root@ip-172-31-82-119 sudoers.d]# ls
-90-cloud-init-users  ansible
-[root@ip-172-31-82-119 sudoers.d]# vi ansible
-[root@ip-172-31-82-119 sudoers.d]# cat ansible
-# Created by cloud-init v. 19.4 on Fri, 04 Mar 2022 19:21:53 +0000
-
-# User rules for centos
-ansible ALL=(ALL) NOPASSWD:ALL
-```
-
-## Prueba conectividad
-
-Luego de armado el archivo /ansible/hosts de ansible:
-
-Se clona repo en la pc maestra con archivos de ansible y se prueba conectividad. Se trabaja desde el usuario ansible.
-```
-ansible@DESKTOP-G427733:~$ git clone https://github.com/silviaalejandra/tp2_devops.git
-ansible@DESKTOP-G427733:~/tp2_devops$ git branch lablocal
-ansible@DESKTOP-G427733:~/tp2_devops$ git pull origin lablocal
-
-ansible@DESKTOP-G427733:~/tp2_devops/ansible$ ansible -i hosts -m ping all
-DESKTOP-G427733 | SUCCESS => {
-    "changed": false,
-    "ping": "pong"
-}
-18.233.155.128 | SUCCESS => {
-    "changed": false,
-    "ping": "pong"
+az : WARNING: The underlying Active Directory Graph API will be replaced by Microsoft Graph API in a future version of Azure CLI. Please carefully review 
+all breaking changes introduced during this migration: https://docs.microsoft.com/cli/azure/microsoft-graph-migration
+En línea: 1 Carácter: 1
++ az ad sp create-for-rbac --role="Contributor"
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (WARNING: The un...graph-migration:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+WARNING: Starting from Azure CLI 2.35.0, --scopes argument will become required for creating role assignments. Please explicitly specify --scopes.
+WARNING: Creating 'Contributor' role assignment under scope '/subscriptions/2e3b5939-31bd-4d94-8053-5f2b29b1b99c'
+WARNING: The output includes credentials that you must protect. Be sure that you do not include these credentials in your code or check the credentials 
+into your source control. For more information, see https://aka.ms/azadsp-cli
+{
+  "appId": "ab23ce50-de19-4394-8db8-2549f3280f9d",
+  "displayName": "azure-cli-2022-03-09-02-14-24",
+  "password": "***********************",
+  "tenant": "899789dc-202f-44b4-8472-a6d40f9eb440"
 }
 ```
+
+02 - Completar las variables de acceso al entonro Azure /terraform/credentials.tf con los valores de la suscripción y del service principal obtenido en el paso anterior
+
+```
+provider "azurerm" {
+features {}
+subscription_id = "<SUBSCRIPTION_ID>"
+client_id = "<APP_ID>"  # se obtiene al crear el service principal
+client_secret = "<CLIENT_SECRET>"  # se obtiene al crear el service principal
+tenant_id = "<TENANT_ID>"  # se obtiene al crear el service principal
+}
+```
+## Creacion de Infraestructura e instalacion de Kubernetes y ArgoCD

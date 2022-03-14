@@ -6,6 +6,7 @@ A continuacion se describirán los pasos necesarios y los pre requisitos para el
 
 Todos los códigos a utilizar están disponibles en su última versión en https://github.com/silviaalejandra/tp2_devops
 El repositorio cuenta con la siguiente informacion y ejecutables
+```
 tp2_devops
 ├── README.md
 ├── ansible
@@ -126,19 +127,20 @@ tp2_devops
     ├── vm.tf
     ├── vmb.tf
     └── vmc.tf
-
+```
 ## Licencias 
 Las licencias utilizadas por las aplicaciones que estaremos trabajando pueden encontrarse en los siguientes ficheros. El uso de estos productos implica la aceptación de las mismas.
 * Terraform: fichero /terraform/LICENSE. **Mozilla Public License**
 * Ansible: fichero /ansible/LICENSE. **GNU GENERAL PUBLIC LICENSE**
 * ArgoCD: fichero/LICENSE. **Apache License** 
+```
 tp2_devops
 ├── ansible
 │   ├── LICENSE
 ├── LICENSE
 └── terraform
  │   ├── LICENSE
-
+```
 # Requisitos y restricciones
 Se entiende como **entorno de trabajo** al equipo desde el cual se ejecutarán todos los ficheros que componen la instalación descripta
 Se entiende como **entorno cloud** a la suscripción de Azure que debe estar diponible para la instalación.

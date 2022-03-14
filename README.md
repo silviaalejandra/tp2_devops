@@ -7,6 +7,7 @@ A continuacion se describirán los pasos necesarios y los pre requisitos para el
 
 Todos los códigos a utilizar están disponibles en su última versión en https://github.com/silviaalejandra/tp2_devops
 El repositorio cuenta con la siguiente informacion y ejecutables (Se muestran solo los necesarios para la ejecución de este instructivo de instalación)
+```
 tp2_devops
 ├── ansible
 │   ├── hosts
@@ -19,7 +20,7 @@ tp2_devops
     ├── LICENSE
     ├── correccion-vars.tf
     ├── credentials.tf
-
+```
 **/ansible/hosts**
 Contiene las entradas de los host que se estarán creado durante el proceso definidas por nombre. Una vez finalizada la aplicación de los pre requisitos sobre el entorno local es necesario actualizar el valor de la propiedad con el usuario de servicio proporcionado
 ```
@@ -36,13 +37,14 @@ Las licencias utilizadas por las aplicaciones que estaremos trabajando pueden en
 * Terraform: fichero /terraform/LICENSE. **Mozilla Public License**
 * Ansible: fichero /ansible/LICENSE. **GNU GENERAL PUBLIC LICENSE**
 * ArgoCD: fichero/LICENSE. **Apache License** 
+```
 tp2_devops
 ├── ansible
 │   ├── LICENSE
 ├── LICENSE
 └── terraform
  │   ├── LICENSE
-
+```
 # Requisitos y restricciones
 Se entiende como **entorno de trabajo** al equipo desde el cual se ejecutarán todos los ficheros que componen la instalación descripta
 Se entiende como **entorno cloud** a la suscripción de Azure que debe estar diponible para la instalación.
@@ -53,8 +55,6 @@ El mismo puede ser generado en cualquier PC con windows siguiendo los pasos de l
 
 1 - Iniciar sesion en el entorno de trabajo seleccionando la aplicacion "Ubuntu" desde el menú Inicio de Windows. 
 > El usuario con el cual se accede tiene la posibilidad de hacer sudo con la contraseña seteada en los pasos de creacion.
-
-![UBUNTU_LOGIN](images/01.01.step.jpg)
 <p align="center">
   <img src="images/01.01.step.jpg" />
 </p>
@@ -65,11 +65,11 @@ El mismo puede ser generado en cualquier PC con windows siguiendo los pasos de l
 $ sudo apt update
 ```
 
-![APT_UPDATE](images/01.02.step.jpg)
 <p align="center">
   <img src="images/01.02.step.jpg" />
 </p>
 3- Instalar git para clonar el repositorio con los archivos a ejecutar.
+
 ```
 $ sudo apt install git
 ```
@@ -77,6 +77,7 @@ $ sudo apt install git
   <img src="images/01.03.step.jpg" />
 </p>
 4 - Clonar el repositorio de trabajo y posicionarse en el directorio de trabajo
+
 ```
 $ git clone https://github.com/silviaalejandra/tp2_devops.git
 $ cd tp2_devops
@@ -85,6 +86,7 @@ $ ls -al
 <p align="center">
   <img src="images/01.04.step.jpg" />
 </p>
+
 
 
 

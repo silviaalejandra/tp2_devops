@@ -41,6 +41,7 @@ sudo chmod 440 /etc/sudoers.d/${struser}
 #echo "$USER"
 #cd $strActualDir
 sudo cp -r . /home/${struser}/tp2_devops
+sudo mkdir /home/${struser}/tp2_devops/terraform/.ssh
 sudo chown -R /home/${struser}/*
 
     #* Ansible
@@ -67,8 +68,6 @@ echo `date "+%d/%m/%Y %H:%M:%S"`": ------------ instalamos las aplicaciones requ
 sudo apt install openssh-server
 sudo service ssh status
 sudo service ssh start
-    #* ssh-keygen
-
 
 echo `date "+%d/%m/%Y %H:%M:%S"`": instalamos las aplicaciones requeridas"
 echo `date "+%d/%m/%Y %H:%M:%S"`": instalamos las aplicaciones requeridas"

@@ -224,9 +224,9 @@ Instalar en el entorno de trabajo el cliente Azure Cli de acuerdo a las [instruc
 Ingrear a PowerShell y ejecutar a creacion de un service principal. Este service será una especie de usuario de servicio dentro del entorno cloud
 
 ```
-az login
-az account set --subscription=<SUBSCRIPTION_ID>
-az ad sp create-for-rbac --role="Contributor"
+PS > az login
+PS > az account set --subscription=<SUBSCRIPTION_ID>
+PS > az ad sp create-for-rbac --role="Contributor"
 ```
 
 El resultado será similar al siguiente (se protegen datos de la suscripcion de ejemplo)
@@ -264,7 +264,75 @@ tenant_id = "<TENANT_ID>"  # se obtiene al crear el service principal
 }
 ```
 
-## Creacion de Infraestructura e instalacion de Kubernetes y ArgoCD
+03 - Aceptar el uso de la imágen
+Para la implenetacion se ha decidido utilizar vms de Azure con una imágen de CentOS 8.
+Esta imágen la provee Azure, con lo cual debemos aceptar los terminos de us uso.
+Para ello ejecutamos en PoweShell
+
+```
+PS > az vm image terms show --urn cognosys:centos-8-stream-free:centos-8-stream-free:1.2019.0810
+PS > az vm image terms accept --urn cognosys:centos-8-stream-free:centos-8-stream-free:1.2019.0810
+```
+
+Tendremos una salida como la siguiente
+
+```
+PS > az vm image terms show --urn cognosys:centos-8-stream-free:centos-8-stream-free:1.2019.0810
+{
+  "accepted": false,
+  "id": "/subscriptions/************/providers/Microsoft.MarketplaceOrdering/offerTypes/VirtualMachine/publishers/cognosys/offers/centos-
+8-stream-free/plans/centos-8-stream-free/agreements/current",
+  "licenseTextLink": "https://mpcprodsa.blob.core.windows.net/legalterms/3E5ED_legalterms_COGNOSYS%253a24CENTOS%253a2D8%253a2DSTREAM%253a2DFREE%253a24CENTOS%253a
+2D8%253a2DSTREAM%253a2DFREE%253a24CCYSNQWELVORSIA5MDTVHE6FPIZ5GCO3T6OUM53IUP4XFKJY2B4QTN6L43QJMNSF7SRMTP24UPT5LWRG35IQ7SJVHFMLGFEXMXKVQGI.txt",
+  "marketplaceTermsLink": "https://mpcprodsa.blob.core.windows.net/marketplaceterms/3EDEF_marketplaceterms_VIRTUALMACHINE%253a24AAK2OAIZEAWW5H4MSP5KSTVB6NDKKRTUB
+AU23BRFTWN4YC2MQLJUB5ZEYUOUJBVF3YK34CIVPZL2HWYASPGDUY5O2FWEGRBYOXWZE5Y.txt",
+  "name": "centos-8-stream-free",
+  "plan": "centos-8-stream-free",
+  "privacyPolicyLink": "http://www.cogno-sys.com/cognosys-technologies-partners/privacy-policy/",
+  "product": "centos-8-stream-free",
+  "publisher": "cognosys",
+  "retrieveDatetime": "2022-03-09T19:20:59.1335954Z",
+  "signature": "J2D6EPBV73ZCLDWSUFP73VI56XPMZAJNY7NB6SZVDFC4S5MYCR5PBLF2TWRRQNGD4QVDQJNXD53A4QEQLETVXOBTSGDHAWAQW3ZXQLA",
+  "systemData": {
+    "createdAt": "2022-03-09T19:20:59.208544+00:00",
+    "createdBy": "2e3b5939-31bd-4d94-8053-5f2b29b1b99c",
+    "createdByType": "ManagedIdentity",
+    "lastModifiedAt": "2022-03-09T19:20:59.208544+00:00",
+    "lastModifiedBy": "2e3b5939-31bd-4d94-8053-5f2b29b1b99c",
+    "lastModifiedByType": "ManagedIdentity"
+  },
+  "type": "Microsoft.MarketplaceOrdering/offertypes"
+}
+
+PS > az vm image terms accept --urn cognosys:centos-8-stream-free:centos-8-stream-free:1.2019.0810
+{
+  "accepted": true,
+  "id": "/subscriptions/*************************/providers/Microsoft.MarketplaceOrdering/offerTypes/Microsoft.MarketplaceOrdering/offertypes/publishe
+rs/cognosys/offers/centos-8-stream-free/plans/centos-8-stream-free/agreements/current",
+  "licenseTextLink": "https://mpcprodsa.blob.core.windows.net/legalterms/3E5ED_legalterms_COGNOSYS%253a24CENTOS%253a2D8%253a2DSTREAM%253a2DFREE%253a24CENTOS%253a
+2D8%253a2DSTREAM%253a2DFREE%253a24CCYSNQWELVORSIA5MDTVHE6FPIZ5GCO3T6OUM53IUP4XFKJY2B4QTN6L43QJMNSF7SRMTP24UPT5LWRG35IQ7SJVHFMLGFEXMXKVQGI.txt",
+  "marketplaceTermsLink": "https://mpcprodsa.blob.core.windows.net/marketplaceterms/3EDEF_marketplaceterms_VIRTUALMACHINE%253a24AAK2OAIZEAWW5H4MSP5KSTVB6NDKKRTUB
+AU23BRFTWN4YC2MQLJUB5ZEYUOUJBVF3YK34CIVPZL2HWYASPGDUY5O2FWEGRBYOXWZE5Y.txt",
+  "name": "centos-8-stream-free",
+  "plan": "centos-8-stream-free",
+  "privacyPolicyLink": "http://www.cogno-sys.com/cognosys-technologies-partners/privacy-policy/",
+  "product": "centos-8-stream-free",
+  "publisher": "cognosys",
+  "retrieveDatetime": "2022-03-09T19:22:56.7866237Z",
+  "signature": "OEQFNTTJDQBKUZYBXTJKOOSN5MBK3JLUFKCRCNKDSFYZDCPRHEF5ZN7YYRJ7JOELSL6HV26DWKYNJPCPB3BQ2RPWF6VPBHPLUFONINQ",
+  "systemData": {
+    "createdAt": "2022-03-09T19:22:57.713446+00:00",
+    "createdBy": "2e3b5939-31bd-4d94-8053-5f2b29b1b99c",
+    "createdByType": "ManagedIdentity",
+    "lastModifiedAt": "2022-03-09T19:22:57.713446+00:00",
+    "lastModifiedBy": "2e3b5939-31bd-4d94-8053-5f2b29b1b99c",
+    "lastModifiedByType": "ManagedIdentity"
+  },
+  "type": "Microsoft.MarketplaceOrdering/offertypes"
+}
+```
+
+## Creacion de Infraestructura e instalacion de Kubernetes
 
 Para la instalacion ejecutaremos el fichero /startdeply.sh con los parametros A A lo cual nos permite aplicar tanto la creacion de la infraestructura como la instalacion de Kubernetes a continuación
 >IMPORTANTE: Debemos ejecutar todos los pasos siguientes con el usuario de servicio creado en los pasos anteriores
@@ -277,7 +345,93 @@ $ . ./ startdeploy.sh A A
   <img src="images/deploy01.jpg" />
 </p>
 
+El script trabaja de la siguiente forma:
+
+**01- Alta de infraestructura en Azure**
+Para esto se ejecutan los ficheros dentro del directorio /terraform que definen las directivas de creacion de cada servicio en Azure.
 El resultado se podrá visualizar en la consola de la suscripción de Azure. 
+
 <p align="center">
   <img src="images/deploy02.jpg" />
 </p>
+
+Al finalizar nos arroja por pantalla la lista de IPs y nombres de las vms creadas. A su vez genera un archivo en /ansible/group_vars/v_host.yaml con las IPs publicas de las VM para poder actualizar los ficheros /etc/hosts de las maquinas involucradas en la instalacion. Estas son las vm de Azure y el entorno de trabajo.
+Si todo se completa de forma correcta, se muestra una salida de prueba de conectividad de Ansible con los nodos de trabajo, debiendo estar en *SUCCESS* todas las conexiones.
+
+<p align="center">
+  <img src="images/deploy04.jpg" />
+</p>
+
+Los datos se obtienen consultando a las salidas disponibles de la ejecucion de terraform configuradas en /terraform/output.tf
+
+**02 - Actualizacion del entorno de trabajo**
+En este paso actualiza el hosts del entorno de trabajo con las ips de las nuevas vm de Azure.
+A su vez sincroniza el tiempo del equipo e instala el cliente de argocd.
+Para ello utiliza un playbook de ansible que ejecuta el rol init_controller para los nodos definidos en /ansible/hosts bajo el grupo [controller]
+
+>NOTA: Esto se puede ejecutar desde /ansible/controller.sh Por defecto se ejecuta con /statdeploy.sh.
+
+**03 - Actualizacion de las máquinas involucradas**
+En este paso actualiza los paquetes de instalacion de los equipos para los sistemas operativos correspondientes y el archivo /etc/hosts de cada equipo. 
+Esto ejecuta un playbook de ansible para los nodos definidos en /ansible/hosts bajo el grupo [updatepaqs]
+>NOTA: Esto se puede ejecutar desde /ansible/deploy.sh, lo cual Instala Kubernetes y Argocd, o desde /ansible/prerequisites.sh Por defecto se ejecuta con /statdeploy.sh.
+
+**05 - Preparación del equipo NFS**
+Se completan las tareas de preparacion de la vm que funcionará como nodo nfs en el cluster de Kubernetes.
+Se instalan las herramientas:
+* nfs-utils
+* net-tools
+y se habilitan en firewall los servicios
+* nfs
+* rpc-bind
+* mountd
+
+>NOTA: Esto se puede ejecutar desde /ansible/deploy.sh, lo cual Instala Kubernetes y ArgoCD o desde /ansible/nfs.sh Por defecto se ejecuta con /statdeploy.sh.
+
+**05 - Preparación del equipo master**
+Se completan las tareas de preparacion de la vm que funcionará como nodo master en el cluster de Kubernetes.
+Se instalan las herramientas para levantar el cluster
+* Docker
+* Kubeadm
+* Kubelet
+* Kubectl
+
+>NOTA: Esto se puede ejecutar desde /ansible/deploy.sh, lo cual Instala Kubernetes y Argocd, o desde /ansible/master.sh Por defecto se ejecuta con /statdeploy.sh.
+
+La preparacion se divide en distintos roles de Ansible para su ejecucion
+* init_k8snodes
+	contienen todas las intalaciones necesarias para Kubernetes y configuraciones de network que se comparte en cualquier tipo de nodo (master o worker)
+* role: init_master
+Completa la instalacion del nodo master configurando el SDN y creando las llaves de comunicacion entre el master y los nodos.
+
+La preparacion se divide en distintos roles de Ansible para su ejecucion
+* init_k8snodes
+	contienen todas las intalaciones necesarias para Kubernetes y configuraciones de network que se comparte en cualquier tipo de nodo (master o worker)
+* role: init_master
+Completa la instalacion del nodo master configurando el SDN y creando las llaves de comunicacion entre el master y los nodos.
+A su vez se installa un ingress del tipo [haproxy](https://www.haproxy.com/documentation/kubernetes/latest/) para el despliegue de aplicaciones y el acceso desde el esterior.
+
+**06 - Preparación del equipo master**
+Se completan las tareas de preparacion de la vm que funcionará como nodo master en el cluster de Kubernetes.
+Se instalan las herramientas para levantar el cluster
+* Docker
+* Kubeadm
+* Kubelet
+* Kubectl
+
+>NOTA: Esto se puede ejecutar desde /ansible/deploy.sh, lo cual Instala Kubernetes y Argocd, o desde /ansible/workers.sh Por defecto se ejecuta con /statdeploy.sh.
+
+La preparacion se divide en distintos roles de Ansible para su ejecucion
+* init_k8snodes
+	contienen todas las intalaciones necesarias para Kubernetes y configuraciones de network que se comparte en cualquier tipo de nodo (master o worker)
+* role: init_worker
+Se centra en la sincronizacion del nodo worker con el master
+
+## Instalacion de ArgoCD
+[ArgoCD](https://argo-cd.readthedocs.io/en/stable/) es una herramienta de despliegue continuo que funciona de forma declarativa. Se puede instalar en un clúster de Kubernetes y puede desplegar aplicaciones en el mismo clúster o en otros clústers, permitiendo así gestionar de forma centralizada y automática el despliegue de software.
+
+<p align="center">
+  <img src="images/argocd01.jpg" />
+</p>
+
+>NOTA: Esto se puede ejecutar desde /ansible/deploy.sh, lo cual Instala Kubernetes y Argocd, o desde /ansible/app_argocd.sh. Por defecto se ejecuta con /statdeploy.sh.

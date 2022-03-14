@@ -1,146 +1,48 @@
 # Instalación de infraestructura sobre Azure para despliegue de Kubernetes
 
 A continuacion se describirán los pasos necesarios y los pre requisitos para el
-- Despliegue de infraestructura en Azure
-- Instalación de Kubernetes en la infraestructura desplegada
+- Despliegue de infraestructura en Azure con Terraform
+- Instalación de Kubernetes en la infraestructura desplegada con Ansible
+- Instalacion de la aplicación ArgoCD con Ansible sobre Kubernetes 
 
 Todos los códigos a utilizar están disponibles en su última versión en https://github.com/silviaalejandra/tp2_devops
-El repositorio cuenta con la siguiente informacion y ejecutables
-```
+El repositorio cuenta con la siguiente informacion y ejecutables (Se muestran solo los necesarios para la ejecución de este instructivo de instalación)
 tp2_devops
-├── README.md
 ├── ansible
-│   ├── LICENSE
-│   ├── app_argocd.sh
-│   ├── app_argocd.yaml
-│   ├── controller.sh
+│   ├── hosts
 │   ├── deploy.sh
 │   ├── group_vars
-│   │   ├── kube.yaml
-│   │   ├── template_vars_host
 │   │   └── v_host.yaml
-│   ├── hosts
-│   ├── master.sh
-│   ├── nfs.sh
-│   ├── prerequisites.sh
-│   ├── roles
-│   │   ├── argocd
-│   │   │   ├── defaults
-│   │   │   │   └── main.yaml
-│   │   │   ├── files
-│   │   │   │   ├── 01-customresource.yaml
-│   │   │   │   ├── 02-service_account.yaml
-│   │   │   │   ├── 03-roles.yaml
-│   │   │   │   ├── 04-configmap.yaml
-│   │   │   │   ├── 05-secret.yaml
-│   │   │   │   ├── 06-service.yaml
-│   │   │   │   ├── 07-deployment.yaml
-│   │   │   │   ├── 08-statefullset.yaml
-│   │   │   │   ├── 09-network.yaml
-│   │   │   │   └── argodeployment.yaml
-│   │   │   └── tasks
-│   │   │       ├── 01-namespace.yaml
-│   │   │       ├── 02-setup_files.yaml
-│   │   │       ├── 03-config_firewall.yaml
-│   │   │       ├── 04-install_argocd.yaml
-│   │   │       └── main.yaml
-│   │   ├── init_controller
-│   │   │   ├── defaults
-│   │   │   │   └── main.yaml
-│   │   │   ├── tasks
-│   │   │   │   ├── 01-setup_controller.yaml
-│   │   │   │   └── main.yaml
-│   │   │   └── vars
-│   │   │       └── template_vars_host
-│   │   ├── init_k8snodes
-│   │   │   ├── defaults
-│   │   │   │   └── main.yaml
-│   │   │   ├── files
-│   │   │   │   ├── daemon.json
-│   │   │   │   ├── k8s.conf
-│   │   │   │   └── kubernetes.repo
-│   │   │   └── tasks
-│   │   │       ├── 01-config_firewall.yaml
-│   │   │       ├── 02-swap.yaml
-│   │   │       ├── 03-install_docker.yaml
-│   │   │       ├── 04-kube.yaml
-│   │   │       └── main.yaml
-│   │   ├── init_master
-│   │   │   ├── defaults
-│   │   │   │   └── main.yaml
-│   │   │   └── tasks
-│   │   │       ├── 01-config_firewall.yaml
-│   │   │       ├── 02-admin_kubeadm.yaml
-│   │   │       ├── 03-Habilito_kube_root.yaml
-│   │   │       ├── 04-azure_SDN.yaml
-│   │   │       ├── 05-install_ingress.yaml
-│   │   │       ├── 06-restar_host.yaml
-│   │   │       └── main.yaml
-│   │   ├── init_nfs
-│   │   │   └── tasks
-│   │   │       ├── 01-install_packages.yaml
-│   │   │       ├── 02-config_firewall.yaml
-│   │   │       └── main.yaml
-│   │   ├── init_workers
-│   │   │   ├── defaults
-│   │   │   │   └── main.yaml
-│   │   │   ├── files
-│   │   │   │   └── README
-│   │   │   └── tasks
-│   │   │       ├── 01-config_firewall.yaml
-│   │   │       ├── 02-join_master.yaml
-│   │   │       ├── 03-restar_host.yaml
-│   │   │       └── main.yaml
-│   │   └── prerequisites
-│   │       ├── defaults
-│   │       │   └── main.yaml
-│   │       └── tasks
-│   │           ├── 00-update_packs.yaml
-│   │           ├── 01-timezone.yaml
-│   │           ├── 02-selinux.yaml
-│   │           ├── 03-install_packs.yaml
-│   │           ├── 04-hosts.yaml
-│   │           ├── 05-firewall.yaml
-│   │           └── main.yaml
-│   ├── setup_controller.yaml
-│   ├── setup_master.yaml
-│   ├── setup_nfs.yaml
-│   ├── setup_prerequisites.yaml
-│   ├── setup_worker.yaml
-│   └── workers.sh
-├── images
-│   └── 01.02.step.jpg
 ├── requisitos.sh
 ├── startdeploy.sh
 └── terraform
     ├── LICENSE
     ├── correccion-vars.tf
     ├── credentials.tf
-    ├── generate_inv.sh
-    ├── inventory.py
-    ├── main.tf
-    ├── network.tf
-    ├── output.tf
-    ├── resolv_correction.yml
-    ├── security.tf
-    ├── variables.tf
-    ├── vm.tf
-    ├── vmb.tf
-    └── vmc.tf
+
+**/ansible/hosts**
+Contiene las entradas de los host que se estarán creado durante el proceso definidas por nombre. Una vez finalizada la aplicación de los pre requisitos sobre el entorno local es necesario actualizar el valor de la propiedad con el usuario de servicio proporcionado
 ```
+ansible_user=<usuario servicio creado>
+```
+**/ansible/deploy.sh**
+Si bien todo el proceso de creacion de infraestructura e instalacion de la aplicación lo estaremos realizando con el fichero principal, es posible ejecutar la instalacion de Kubernetes y de AgoCD solo ejecutando desploy.sh.
+>IMPORTANTE: El uso de este fichero implica que la plataforma ya se encuentra disponible y generado el archivo /ansible/group_vars/v_host.yaml con las IPs publicas de las VM de Azure
+
+**/requisitos.sh**
+Con este fichero estaremos instalando las herramientas necesarias en el entorno local de trabajo para el uso de Terraform y Ansible.
 ## Licencias 
 Las licencias utilizadas por las aplicaciones que estaremos trabajando pueden encontrarse en los siguientes ficheros. El uso de estos productos implica la aceptación de las mismas.
 * Terraform: fichero /terraform/LICENSE. **Mozilla Public License**
 * Ansible: fichero /ansible/LICENSE. **GNU GENERAL PUBLIC LICENSE**
 * ArgoCD: fichero/LICENSE. **Apache License** 
-```
 tp2_devops
 ├── ansible
 │   ├── LICENSE
 ├── LICENSE
 └── terraform
  │   ├── LICENSE
-```
+
 # Requisitos y restricciones
 Se entiende como **entorno de trabajo** al equipo desde el cual se ejecutarán todos los ficheros que componen la instalación descripta
 Se entiende como **entorno cloud** a la suscripción de Azure que debe estar diponible para la instalación.

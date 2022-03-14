@@ -478,6 +478,18 @@ Obtendremos un prompt para ingresar usuario y contraseña. El primer ingreso ser
 Al momento de la entrega no se ha podido levantar la UI del aplicativo ArgoCD.
 La definición de Ingress para utilizar el Ingress Controller de Haproxy no está siendo la correcta y no se ha podido avanzar. Se está siguendo la documentacion oficial de Haproxy para los flags https://www.haproxy.com/documentation/kubernetes/latest/configuration/ingress/ y de ArgoCD https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/ para la configuración
 
+<p align="center">
+  <img src="images/kube01.jpg" />
+  <br>
+   <img src="images/kube02.jpg" />
+   <br>
+   <img src="images/kube03.jpg" />
+   <br>
+   <img src="images/kube04.jpg" />
+   <br>
+   <img src="images/kube05.jpg" />
+</p>
+
 ## Notas del proceso TP 02
 * Se han encontado algunos incovenientes con la instalacion de la extension ansible-galaxy collection kubernetes.core.k8s lo cual nos permitía ejecutar comandos kubectl desde Ansible.
 Luego de instalada no se encontraban los ficheros de la extensión.

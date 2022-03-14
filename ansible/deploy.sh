@@ -26,3 +26,8 @@ echo `date "+%d/%m/%Y %H:%M:%S"`": Inicia seteo de nodos"
 . ./nfs.sh
 . ./master.sh
 . ./workers.sh
+
+# ejecuto
+echo `date "+%d/%m/%Y %H:%M:%S"`": Inicia instalacion de aplicacion argoCD"
+. ./app_argocd.sh
+echo `date "+%d/%m/%Y %H:%M:%S"`": Fin tareas de deploy"

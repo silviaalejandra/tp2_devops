@@ -1,0 +1,23 @@
+---
+#Configuramos el firewall
+- name: 'puertos argocd'
+  firewalld:
+    port: "{{ item }}/tcp"
+    permanent: yes
+    state: enabled
+    zone: public
+  loop: '{{ ports_argo }}'
+  become: true
+  become_method: sudo
+
+#- name: restart firewalld
+#  systemd:
+#    name: firewalld
+#    state: reloaded
+#  become: true
+#  become_method: sudo
+- name: restart firewalld
+  command: systemctl restart firewalld
+  register: result
+  become: true
+  become_method: sudo

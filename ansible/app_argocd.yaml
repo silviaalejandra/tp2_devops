@@ -1,0 +1,9 @@
+---
+
+- hosts: master
+#  strategy: debug
+  vars_files:
+  #  - 'group_vars/xxx.yaml'
+  gather_facts: false
+  roles:
+    - role: argocd

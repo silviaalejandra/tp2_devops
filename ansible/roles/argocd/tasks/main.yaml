@@ -1,0 +1,6 @@
+---
+
+- include_tasks: 01-namespace.yaml
+- include_tasks: 02-setup_files.yaml
+- include_tasks: 03-config_firewall.yaml
+- include_tasks: 04-install_argocd.yaml

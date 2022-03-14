@@ -1,0 +1,26 @@
+---
+#https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+- name: Creo directorio tmp
+  file:
+    path: /tmp/argocd
+    state: directory
+  become: true
+  become_method: sudo
+
+- name: 'Copio archivos yaml'
+  copy:
+    src: '{{item}}'
+    dest: '/tmp/argocd/'
+  become: true
+  become_method: sudo
+  loop:
+    - 01-customresource.yaml
+    - 02-service_account.yaml
+    - 03-roles.yaml
+    - 04-configmap.yaml
+    - 05-secret.yaml
+    - 06-service.yaml
+    - 07-deployment.yaml
+    - 08-statefullset.yaml
+    - 09-network.yaml
+    

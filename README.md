@@ -5,7 +5,9 @@ A continuacion se describirán los pasos necesarios y los pre requisitos para el
 - Instalación de Kubernetes en la infraestructura desplegada con Ansible
 - Instalacion de la aplicación ArgoCD con Ansible sobre Kubernetes 
 
-+++++++grafico infra++++++
+<p align="center">
+  <img src="images/deploy03.jpg" />
+</p>
 
 
 
@@ -198,19 +200,14 @@ $ sudo cp ~/.ssh/id_rsa.pub $HOME/<userServicio>/tp2_devops/terraform/.ssh/id_rs
 ## Entorno cloud
 Se detallan a continuacion los requisitos y restricciones del uso de un entorno Azure con licencia limitada o gratuita
 
-El objetivo final de este desploegue de infraestructura será de 3 VMs  con su respectiva configuraciond e red para poder accederlas e instalar Kubernetes.
+El objetivo final de este despliegue de infraestructura será de 3 VMs  con su respectiva configuraciond e red para poder accederlas e instalar Kubernetes.
 >IMPORTANTE: Para el despliegue de un cluster, los requistos deseables son los siguientes
 >
 >| Role | vCPUs | Memoria (GiB) | Disco Duro |
->
 >|------|-------------------|-------|---------------|------------|
->
 >| NFS | 2 | 4 | 1 x 20 GiB (boot) |
->
 >| Master | 2 | 8 | 1 x 20 GiB (boot) |
->
 >| Worker | 2 | 4 | 1 x 20 GiB (boot) |
->
 >| Worker | 2 | 4 | 1 x 20 GiB (boot) |
 >
 >Por restricciones de la cuenta no es posible utilizar más de 7 vCPUs con lo cual se creará un cluster con solo un nodo Worker, ya que Kubeadm no corre en menos de 2 vCPU
@@ -233,6 +230,7 @@ az ad sp create-for-rbac --role="Contributor"
 ```
 
 El resultado será similar al siguiente (se protegen datos de la suscripcion de ejemplo)
+
 ```
 az : WARNING: The underlying Active Directory Graph API will be replaced by Microsoft Graph API in a future version of Azure CLI. Please carefully review 
 all breaking changes introduced during this migration: https://docs.microsoft.com/cli/azure/microsoft-graph-migration
@@ -265,4 +263,21 @@ client_secret = "<CLIENT_SECRET>"  # se obtiene al crear el service principal
 tenant_id = "<TENANT_ID>"  # se obtiene al crear el service principal
 }
 ```
+
 ## Creacion de Infraestructura e instalacion de Kubernetes y ArgoCD
+
+Para la instalacion ejecutaremos el fichero /startdeply.sh con los parametros A A lo cual nos permite aplicar tanto la creacion de la infraestructura como la instalacion de Kubernetes a continuación
+>IMPORTANTE: Debemos ejecutar todos los pasos siguientes con el usuario de servicio creado en los pasos anteriores
+
+```
+$ . ./ startdeploy.sh A A
+```
+
+<p align="center">
+  <img src="images/deploy01.jpg" />
+</p>
+
+El resultado se podrá visualizar en la consola de la suscripción de Azure. 
+<p align="center">
+  <img src="images/deploy02.jpg" />
+</p>

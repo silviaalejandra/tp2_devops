@@ -114,14 +114,14 @@ Se detallan a continuacion las características del equipo entorno de trabajo de
 SO Ubuntu 20.04.3 LTS (GNU/Linux 5.10.16.3-microsoft-standard-WSL2 x86_64)
 El mismo puede ser generado en cualquier PC con windows siguiendo los pasos de la [página oficial de Microsoft](https://docs.microsoft.com/en-us/windows/wsl/install)
 
-1 - Iniciar sesion en el entorno de trabajo seleccionando la aplicacion "Ubuntu" desde el menú Inicio de Windows. 
+**1 - Iniciar sesion en el entorno de trabajo seleccionando la aplicacion "Ubuntu" desde el menú Inicio de Windows.** 
 > El usuario con el cual se accede tiene la posibilidad de hacer sudo con la contraseña seteada en los pasos de creacion.
 
 <p align="center">
   <img src="images/01.01.step.jpg" />
 </p>
 
-2 - Ejecutar el siguiente comando para actualizar los paquetes del equipo. Esto nos permitirá además realizar otras instalaciones previas de herramientas.
+**2 - Ejecutar el siguiente comando para actualizar los paquetes del equipo. Esto nos permitirá además realizar otras instalaciones previas de herramientas.**
 
 ```
 $ sudo apt update
@@ -131,7 +131,7 @@ $ sudo apt update
   <img src="images/01.02.step.jpg" />
 </p>
 
-3- Instalar git para clonar el repositorio con los archivos a ejecutar.
+**3- Instalar git para clonar el repositorio con los archivos a ejecutar.**
 
 ```
 $ sudo apt install git
@@ -140,7 +140,8 @@ $ sudo apt install git
 <p align="center">
   <img src="images/01.03.step.jpg" />
 </p>
-4 - Clonar el repositorio de trabajo y posicionarse en el directorio de trabajo
+
+**4 - Clonar el repositorio de trabajo y posicionarse en el directorio de trabajo**
 
 ```
 $ git clone https://github.com/silviaalejandra/tp2_devops.git
@@ -152,7 +153,8 @@ $ ls -al
   <img src="images/01.04.step.jpg" />
 </p>
 
-5 - Ejecutar el fichero requisitos.sh. Se requieren un parámetros de entrada. 
+**5 - Ejecutar el fichero requisitos.sh. Se requieren un parámetros de entrada.**
+
 *  **userServicio** es el nombre de usuario de servicio. Resguardar esta opcion seleccionada ya que será utilizada para completar los archivos /terraform/correccion-vars.tf y /ansible/hosts.
 
 	>IMPORTANTE: La ejecución de este fichero solicitará la contraseña del usuario logueado en el entorno de trabajo para ejecutar comandos con sudo
@@ -173,7 +175,8 @@ $ sudo sh requisitos.sh <userServicio>
   <img src="images/01.05.step.jpg" />
 </p>
 
-6 - Finalizada la instalacion debemos ingresar con el usuario creado. La contraseña será el mismo nombre de usuario. Allí crearemos una llave ssh para conectarnos con las VM de Azure. Esta llave la colocaremos en un directorio dentro de /terraform/.ssh para su uso por las VM.
+**6 - Finalizada la instalacion debemos ingresar con el usuario creado.**
+La contraseña será el mismo nombre de usuario. Allí crearemos una llave ssh para conectarnos con las VM de Azure. Esta llave la colocaremos en un directorio dentro de /terraform/.ssh para su uso por las VM.
 
 ```
 $ su <userServicio>
@@ -187,7 +190,7 @@ $ sudo cp ~/.ssh/id_rsa.pub $HOME/<userServicio>/tp2_devops/terraform/.ssh/id_rs
   <br><img src="images/01.06.2.step.jpg" /></br>
 </p>
 
-07 - Actualizamos archivos de configuracion necesarios para el funcionamiento de Ansible y Terraform
+**07 - Actualizamos archivos de configuracion necesarios para el funcionamiento de Ansible y Terraform**
 	07.1 - Abrir el fichero $HOME/tp2_devops/ansible/hosts y actualizar el parametro *ansible_user*
 <p align="center">
   <img src="images/01.07.1.step.jpg" />
@@ -212,7 +215,7 @@ El objetivo final de este despliegue de infraestructura será de 3 VMs  con su r
 >
 >Por restricciones de la cuenta no es posible utilizar más de 7 vCPUs con lo cual se creará un cluster con solo un nodo Worker, ya que Kubeadm no corre en menos de 2 vCPU
 
-01 - Obtener id de suscripcion y crear un service principal
+**01 - Obtener id de suscripcion y crear un service principal**
 	Ingresar a la cuenta de Azure y navegar hasta la opcion *Suscripcion*. Tomar el valor *Id. de la suscripcion*
 
 <p align="center">
@@ -252,7 +255,7 @@ into your source control. For more information, see https://aka.ms/azadsp-cli
 }
 ```
 
-02 - Completar las variables de acceso al entonro Azure /terraform/credentials.tf con los valores de la suscripción y del service principal obtenido en el paso anterior
+**02 - Completar las variables de acceso al entonro Azure /terraform/credentials.tf con los valores de la suscripción y del service principal obtenido en el paso anterior**
 
 ```
 provider "azurerm" {
@@ -264,7 +267,7 @@ tenant_id = "<TENANT_ID>"  # se obtiene al crear el service principal
 }
 ```
 
-03 - Aceptar el uso de la imágen
+**03 - Aceptar el uso de la imágen**
 Para la implenetacion se ha decidido utilizar vms de Azure con una imágen de CentOS 8.
 Esta imágen la provee Azure, con lo cual debemos aceptar los terminos de us uso.
 Para ello ejecutamos en PoweShell
@@ -388,7 +391,7 @@ y se habilitan en firewall los servicios
 
 >NOTA: Esto se puede ejecutar desde /ansible/deploy.sh, lo cual Instala Kubernetes y ArgoCD o desde /ansible/nfs.sh Por defecto se ejecuta con /statdeploy.sh.
 
-**05 - Preparación del equipo master**
+**06 - Preparación del equipo master**
 Se completan las tareas de preparacion de la vm que funcionará como nodo master en el cluster de Kubernetes.
 Se instalan las herramientas para levantar el cluster
 * Docker
@@ -411,8 +414,8 @@ La preparacion se divide en distintos roles de Ansible para su ejecucion
 Completa la instalacion del nodo master configurando el SDN y creando las llaves de comunicacion entre el master y los nodos.
 A su vez se installa un ingress del tipo [haproxy](https://www.haproxy.com/documentation/kubernetes/latest/) para el despliegue de aplicaciones y el acceso desde el esterior.
 
-**06 - Preparación del equipo master**
-Se completan las tareas de preparacion de la vm que funcionará como nodo master en el cluster de Kubernetes.
+**07 - Preparación del equipo worker**
+Se completan las tareas de preparacion de la vm que funcionará como nodo worker en el cluster de Kubernetes.
 Se instalan las herramientas para levantar el cluster
 * Docker
 * Kubeadm
@@ -435,3 +438,49 @@ Se centra en la sincronizacion del nodo worker con el master
 </p>
 
 >NOTA: Esto se puede ejecutar desde /ansible/deploy.sh, lo cual Instala Kubernetes y Argocd, o desde /ansible/app_argocd.sh. Por defecto se ejecuta con /statdeploy.sh.
+
+Para la instalacion los archivos yaml de deply se encuentran en /ansible/roles/argocd/files
+
+01 - Datos de configuración
+Una vez finalizada la instalacion es necesario obtener algunos valores dentro del cluster de Kubernetes
+Para ello nos logueamos al equipo master con el usuario de servicio
+
+```
+$ ssh <userServicio>@master
+``` 
+
+Allí ejecutamos los siguientes comandos que nos poermiten obtener informacion de nuestro cluster. Debemos obtener el puerto por el cual redirecciones el ingress
+
+```
+```
+
+Y debemos obtener la contraseña del usuario administrador de ArgoCD que se genera por defecto con un hash en la instalación.
+
+```
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}"  | base64 -d;  echo
+```
+
+Para cambiarla debemos ejecutar
+
+```
+argocd account update-password
+```
+
+**02 - Login por consola**
+Ejecutamos fuera del cluster lo siguiente. Para ello debemos contar con la IP Publica del nodo master y el puerto donde expone el ingress controller
+
+```
+$ argocd login --insecure master:xxxx
+```
+Obtendremos un prompt para ingresar usuario y contraseña. El primer ingreso será con el hash obtendo en el paso anterior.
+
+
+Al momento de la entrega no se ha podido levantar la UI del aplicativo ArgoCD.
+La definición de Ingress para utilizar el Ingress Controller de Haproxy no está siendo la correcta y no se ha podido avanzar. Se está siguendo la documentacion oficial de Haproxy para los flags https://www.haproxy.com/documentation/kubernetes/latest/configuration/ingress/ y de ArgoCD https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/ para la configuración
+
+## Notas del proceso TP 02
+* Se han encontado algunos incovenientes con la instalacion de la extension ansible-galaxy collection kubernetes.core.k8s lo cual nos permitía ejecutar comandos kubectl desde Ansible.
+Luego de instalada no se encontraban los ficheros de la extensión.
+Por ello se puede observar que se resuelven gran parte de los comandos con la directiva *command*
+
+* No fue posible realizar reload del firewall con *systemd*. No se impactaban los cambios. Se tomó la decision de realizarlo como *command*

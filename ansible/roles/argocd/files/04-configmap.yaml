@@ -63,3 +63,11 @@ metadata:
     app.kubernetes.io/name: argocd-tls-certs-cm
     app.kubernetes.io/part-of: argocd
   name: argocd-tls-certs-cm
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: haproxy-configmap
+data:
+  servers-increment: "42"
+  ssl-redirect: "true"

@@ -99,13 +99,13 @@
 #- debug:
 #    msg: 'Obtenemos detalle del namespace creado : {{ result }}'
 
-- name: Generate pass argocd
-  command: kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
-  register: argocd_pass_admin
-  become: true
-  become_method: sudo
+#- name: Generate pass argocd
+#  command: kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+#  register: argocd_pass_admin
+#  become: true
+#  become_method: sudo
 
-- name: Copy pass to local file
-  local_action: copy content="{{ argocd_pass_admin.stdout_lines[0] }}" dest="./argocd_pass_admin"
-  become: true
-  become_method: sudo
+#- name: Copy pass to local file
+#  local_action: copy content="{{ argocd_pass_admin.stdout_lines[0] }}" dest="./argocd_pass_admin"
+#  become: true
+#  become_method: sudo

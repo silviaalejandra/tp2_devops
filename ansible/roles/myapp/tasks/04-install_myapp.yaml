@@ -1,0 +1,91 @@
+---
+#https://github.com/jadebustos/devopslabs/blob/master/labs-k8s/03-desplegando-routed-application.md
+#- name: customresouces
+#  command: 'kubectl apply -n argocd -f /tmp/argocd/01-customresource.yaml'
+#  register: result
+#  become: true
+#  become_method: sudo
+
+#- debug:
+#    msg: '{{ result }}'
+
+#- name: Service Account
+#  command: 'kubectl apply -n argocd -f /tmp/argocd/02-service_account.yaml'
+#  register: result
+#  become: true
+#  become_method: sudo
+
+#- debug:
+#    msg: '{{ result }}'
+
+#- name: Roles
+#  command: 'kubectl apply -n argocd -f /tmp/argocd/03-roles.yaml'
+#  register: result
+#  become: true
+#  become_method: sudo
+
+#- debug:
+#    msg: '{{ result }}'
+
+- name: Config Maps
+  command: 'kubectl apply -f /tmp/myapp/04-configmap.yaml'
+  register: result
+  become: true
+  become_method: sudo
+
+- debug:
+    msg: '{{ result }}'
+
+#- name: Secrets
+#  command: 'kubectl apply -n argocd -f /tmp/argocd/05-secret.yaml'
+#  register: result
+#  become: true
+#  become_method: sudo
+
+#- debug:
+#    msg: '{{ result }}'
+
+- name: Services
+  command: 'kubectl apply -f /tmp/myapp/06-service.yaml'
+  register: result
+  become: true
+  become_method: sudo
+
+- debug:
+    msg: '{{ result }}'
+
+- name: DEployments
+  command: 'kubectl apply -f /tmp/myapp/07-deployment.yaml'
+  register: result
+  become: true
+  become_method: sudo
+
+- debug:
+    msg: '{{ result }}'
+
+#- name: statefull set
+#  command: 'kubectl apply -n argocd -f /tmp/argocd/08-statefullset.yaml'
+#  register: result
+#  become: true
+#  become_method: sudo
+
+#- debug:
+#    msg: '{{ result }}'
+
+- name: Network
+  command: 'kubectl apply -f /tmp/myapp/09-network.yaml'
+  register: result
+  become: true
+  become_method: sudo
+
+- debug:
+    msg: '{{ result }}'
+
+- name: Obtenemos detalle del namespace creado
+  command: 'kubectl get pods --namespace=webapp-routed'
+  register: result
+  become: true
+  become_method: sudo
+
+- debug:
+    msg: 'Obtenemos detalle del namespace creado : {{ result }}'

@@ -15,3 +15,9 @@
     state: reloaded
   become: true
   become_method: sudo
+
+- name: Reiniciamos el servicio de firewall
+  command: systemctl restart firewalld
+  register: result
+  become: true
+  become_method: sudo

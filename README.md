@@ -5,8 +5,13 @@ A continuacion se describirán los pasos necesarios y los pre requisitos para el
 - Instalación de Kubernetes en la infraestructura desplegada con Ansible
 - Instalacion de la aplicación ArgoCD con Ansible sobre Kubernetes 
 
++++++++grafico infra++++++
+
+
+
 Todos los códigos a utilizar están disponibles en su última versión en https://github.com/silviaalejandra/tp2_devops
 El repositorio cuenta con la siguiente informacion y ejecutables (Se muestran solo los necesarios para la ejecución de este instructivo de instalación)
+
 ```
 tp2_devops
 ├── ansible
@@ -17,26 +22,78 @@ tp2_devops
 ├── requisitos.sh
 ├── startdeploy.sh
 └── terraform
-    ├── LICENSE
     ├── correccion-vars.tf
     ├── credentials.tf
 ```
+
 **/ansible/hosts**
-Contiene las entradas de los host que se estarán creado durante el proceso definidas por nombre. Una vez finalizada la aplicación de los pre requisitos sobre el entorno local es necesario actualizar el valor de la propiedad con el usuario de servicio proporcionado
+
+Contiene las entradas de los host que se estarán creado durante el proceso definidas por nombre. Una vez finalizada la aplicación de los pre requisitos sobre el entorno local es necesario actualizar el valor de la propiedad *ansible_user* con el usuario de servicio proporcionado
+
 ```
 ansible_user=<usuario servicio creado>
 ```
+
 **/ansible/deploy.sh**
+
 Si bien todo el proceso de creacion de infraestructura e instalacion de la aplicación lo estaremos realizando con el fichero principal, es posible ejecutar la instalacion de Kubernetes y de AgoCD solo ejecutando desploy.sh.
 >IMPORTANTE: El uso de este fichero implica que la plataforma ya se encuentra disponible y generado el archivo /ansible/group_vars/v_host.yaml con las IPs publicas de las VM de Azure
 
+**/terraform/correccion-vars.tf**
+
+Contiene las variables principales de la ejecucion de Terraform para la creacion de la infraestructura. Una vez finalizada la aplicación de los pre requisitos sobre el entorno local es necesario actualizar el valor de la variable *ssh_user* con el usuario de servicio proporcionado en la propiedad *default*.
+
+```
+variable "ssh_user" {
+	type = string
+	description = "Usuario para hacer ssh"
+	default = "<SSH USER>"
+}
+```
+
+**/terraform/credentials.tf**
+
+Contiene los valores necesarios para la conectividad con Azure. Se debe actualizar para poder inicial el proceso.
+
+```
+provider "azurerm" {
+features {}
+subscription_id = "<SUBSCRIPTION_ID>"
+client_id = "<APP_ID>"  # se obtiene al crear el service principal
+client_secret = "<CLIENT_SECRET>"  # se obtiene al crear el service principal
+tenant_id = "<TENANT_ID>"  # se obtiene al crear el service principal
+}
+```
+
 **/requisitos.sh**
+
 Con este fichero estaremos instalando las herramientas necesarias en el entorno local de trabajo para el uso de Terraform y Ansible.
+
+**/startdeploy.sh**
+
+Este es el fichero principal de ejecucion. El mismo recibe dos opciones
+* **OpcionInfra** admite los valores **A** para Aplicar (crear) la infraestructura en Azure,  **D** para destruir la plataforma generada en Azure, o **S** para saltar este paso y ejecutarlo en otro momento. 
+	>IMPORTANTE: La destruccion de la infraestructura solo es posible si la misma fue creada con Terraform.
+
+
+	>NOTA: La opción S se puede utilizar para ejecutar solo la implementacion de Kubernetes y ArgoCD teniendo disponible ya la infraestructura en Azure.
+
+* **OpcionKube** admite los valores **A** para intalar Kubernetes y ArgoCD con Ansible, o **S** para saltar el paso de instalación y realizarlo en otro momento. 
+
+```
+/startdeploy.sh <OpcionInfra> <OpcionKube>
+```
+
+<p align="center">
+  <img src="images/REQ01.jpg" />
+</p>
+
 ## Licencias 
 Las licencias utilizadas por las aplicaciones que estaremos trabajando pueden encontrarse en los siguientes ficheros. El uso de estos productos implica la aceptación de las mismas.
 * Terraform: fichero /terraform/LICENSE. **Mozilla Public License**
 * Ansible: fichero /ansible/LICENSE. **GNU GENERAL PUBLIC LICENSE**
 * ArgoCD: fichero/LICENSE. **Apache License** 
+
 ```
 tp2_devops
 ├── ansible
@@ -45,6 +102,7 @@ tp2_devops
 └── terraform
  │   ├── LICENSE
 ```
+
 # Requisitos y restricciones
 Se entiende como **entorno de trabajo** al equipo desde el cual se ejecutarán todos los ficheros que componen la instalación descripta
 Se entiende como **entorno cloud** a la suscripción de Azure que debe estar diponible para la instalación.
@@ -55,6 +113,7 @@ El mismo puede ser generado en cualquier PC con windows siguiendo los pasos de l
 
 1 - Iniciar sesion en el entorno de trabajo seleccionando la aplicacion "Ubuntu" desde el menú Inicio de Windows. 
 > El usuario con el cual se accede tiene la posibilidad de hacer sudo con la contraseña seteada en los pasos de creacion.
+
 <p align="center">
   <img src="images/01.01.step.jpg" />
 </p>
@@ -68,11 +127,13 @@ $ sudo apt update
 <p align="center">
   <img src="images/01.02.step.jpg" />
 </p>
+
 3- Instalar git para clonar el repositorio con los archivos a ejecutar.
 
 ```
 $ sudo apt install git
 ```
+
 <p align="center">
   <img src="images/01.03.step.jpg" />
 </p>
@@ -83,12 +144,31 @@ $ git clone https://github.com/silviaalejandra/tp2_devops.git
 $ cd tp2_devops
 $ ls -al
 ```
+
 <p align="center">
   <img src="images/01.04.step.jpg" />
 </p>
 
+5 - Ejecutar el fichero requisitos.sh. Se requieren un parámetros de entrada. 
+*  **userServicio** es el nombre de usuario de servicio. Resguardar esta opcion seleccionada ya que será utilizada para completar los archivos /terraform/correccion-vars.tf y /ansible/hosts.
 
+	>IMPORTANTE: La ejecución de este fichero solicitará la contraseña del usuario logueado en el entorno de trabajo para ejecutar comandos con sudo
 
+	Esta ejecucion nos permitirá incluir en el entorno de trabajo los siguientes requisitos:
+	* Ansible
+	* Crony
+	* jq
+	* Terraform
+	* python3
+	* openssh-server
+
+```
+$ sudo sh requisitos.sh <userServicio>
+```
+
+<p align="center">
+  <img src="images/01.05.step.jpg" />
+</p>
 
 .
 ├── README.md

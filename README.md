@@ -177,8 +177,25 @@ $ sudo sh requisitos.sh <userServicio>
 $ su <userServicio>
 $ cd $HOME
 $ ssh-keygen -t rsa -b 4096
-$ sudo cp ~/.ssh/id_rsa 
+$ sudo cp ~/.ssh/id_rsa $HOME/<userServicio>/tp2_devops/terraform/.ssh/id_rsa
+$ sudo cp ~/.ssh/id_rsa.pub $HOME/<userServicio>/tp2_devops/terraform/.ssh/id_rsa.pub
 ```
+<p align="center">
+  <img src="images/01.06.1.step.jpg" />
+  <br><img src="images/01.06.2.step.jpg" /></br>
+</p>
+
+07 - Actualizamos archivos de configuracion necesarios para el funcionamiento de Ansible y Terraform
+	07.1 - Abrir el fichero $HOME/tp2_devops/ansible/hosts y actualizar el parametro *ansible_user*
+<p align="center">
+  <img src="images/01.07.1.step.jpg" />
+</p>
+	07.2 - Abrir el fichero $HOME/tp2_devops/terraform/correccion-vars.tf y actualizar el parametro *ssh_user* con el usuario de servicio proporcionado en la propiedad *default*.
+<p align="center">
+  <img src="images/01.07.2.step.jpg" />
+</p>
+
+
 
 .
 ├── README.md

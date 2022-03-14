@@ -13,7 +13,7 @@
   lineinfile:
     dest: /etc/firewalld/firewalld.conf
     regexp: 'AllowZoneDrifting.*'
-    line: 'AllowZoneDrifting:no'
+    line: 'AllowZoneDrifting=no'
     state: present
   become: true
   become_method: sudo

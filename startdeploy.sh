@@ -30,7 +30,7 @@ inTerOption=${1}
 inAnsOption=${2}
 strDate=`date "+%Y%m%d%H%M%S"`
 strActualDir=`pwd`
-strLog="startdeploy$strDate.log"
+strLog="startdeploy_$strDate.log"
 
 exec > >(tee ${strLog} 2>&1)
 

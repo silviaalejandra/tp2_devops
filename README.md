@@ -1,3 +1,43 @@
+# Instalación de infraestructura sobre Azure para despliegue de Kubernetes
+
+A continuacion se describirán los pasos necesarios y los pre requisitos para el
+- Despliegue de infraestructura en Azure
+- Instalación de Kubernetes en la infraestructura desplegada
+
+Todos los códigos a utilizar están disponibles en su última versión en https://github.com/silviaalejandra/tp2_devops
+
+# Requisitos y restricciones
+Se entiende como **entorno de trabajo** al equipo desde el cual se ejecutarán todos los ficheros que componen la instalación descripta
+Se entiende como **entorno cloud** a la suscripción de Azure que debe estar diponible para la instalación.
+## Entorno de trabajo
+Se detallan a continuacion las características del equipo entorno de trabajo desde el cual se lanzarán las ejecuciones.
+SO Ubuntu 20.04.3 LTS (GNU/Linux 5.10.16.3-microsoft-standard-WSL2 x86_64)
+El mismo puede ser generado en cualquier PC con windows siguiendo los pasos de la [página oficial de Microsoft](https://docs.microsoft.com/en-us/windows/wsl/install)
+
+1 - Iniciar sesion en el entorno de trabajo seleccionando la aplicacion "Ubuntu" desde el menú Inicio de Windows. 
+> El usuario con el cual se accede tiene la posibilidad de hacer sudo con la contraseña seteada en los pasos de creacion.
+
+2 - Ejecutar el siguiente comando para actualizar los paquetes del equipo. Esto nos permitirá además realizar otras instalaciones previas de herramientas.
+```
+$ sudo apt update
+```
+![APT_UPDATE](imges/01.02.step.jpg)
+3- Instalar git para clonar el repositorio con los archivos a ejecutar.
+```
+$ sudo apt install git
+```
+4 - Clonar el repositorio de trabajo y posicionarse en el directorio de trabajo
+```
+$ git clone https://github.com/silviaalejandra/tp2_devops.git
+$ cd tp2_devops
+$ ls -al
+
+
+
+
+
+
+
 # TP2_Devops
 
 ## Nodo Master

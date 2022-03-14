@@ -202,10 +202,15 @@ El objetivo final de este desploegue de infraestructura será de 3 VMs  con su r
 >IMPORTANTE: Para el despliegue de un cluster, los requistos deseables son los siguientes
 >
 >| Role | vCPUs | Memoria (GiB) | Disco Duro |
+>
 >|------|-------------------|-------|---------------|------------|
+>
 >| NFS | 2 | 4 | 1 x 20 GiB (boot) |
+>
 >| Master | 2 | 8 | 1 x 20 GiB (boot) |
+>
 >| Worker | 2 | 4 | 1 x 20 GiB (boot) |
+>
 >| Worker | 2 | 4 | 1 x 20 GiB (boot) |
 >
 >Por restricciones de la cuenta no es posible utilizar más de 7 vCPUs con lo cual se creará un cluster con solo un nodo Worker, ya que Kubeadm no corre en menos de 2 vCPU

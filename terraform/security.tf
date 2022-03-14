@@ -17,6 +17,30 @@ resource "azurerm_network_security_group" "security_group" {
     }
 
     security_rule {
+        name                       = "HTTPS"
+        priority                   = 1000
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "443"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+
+    security_rule {
+        name                       = "HTTPS_argo"
+        priority                   = 1080
+        direction                  = "Inbound"
+        access                     = "Allow"
+        protocol                   = "Tcp"
+        source_port_range          = "*"
+        destination_port_range     = "8443"
+        source_address_prefix      = "*"
+        destination_address_prefix = "*"
+    }
+
+    security_rule {
         name                       = "kubernetes01"
         priority                   = 1002
         direction                  = "Inbound"
@@ -59,7 +83,8 @@ resource "azurerm_network_security_group" "security_group" {
         access                     = "Allow"
         protocol                   = "Tcp"
         source_port_range          = "*"
-        destination_port_range     = "30000-32767"
+        #destination_port_range     = "30000-32767"
+        destination_port_range     = "30000-35000"
         source_address_prefix      = "*"
         destination_address_prefix = "*"
     }
@@ -76,17 +101,17 @@ resource "azurerm_network_security_group" "security_group" {
         destination_address_prefix = "*"
     }
 
-    security_rule {
-        name                       = "PORTS"
-        priority                   = 1007
-        direction                  = "Inbound"
-        access                     = "Allow"
-        protocol                   = "Tcp"
-        source_port_range          = "*"
-        destination_port_range     = "25000-65000"
-        source_address_prefix      = "*"
-        destination_address_prefix = "*"
-    }
+    #security_rule {
+    #    name                       = "PORTS"
+    #    priority                   = 1007
+    #    direction                  = "Inbound"
+    #    access                     = "Allow"
+    #    protocol                   = "Tcp"
+    #    source_port_range          = "*"
+    #    destination_port_range     = "25000-65000"
+    #    source_address_prefix      = "*"
+    #    destination_address_prefix = "*"
+    #}
 
         security_rule {
         name                       = "argo2"

@@ -74,3 +74,20 @@
   with_items: "{{ hosts }}"
   become: true
   become_method: sudo
+
+
+#Instalo argo cli para las pruebas
+- name: Update hosts
+  command: curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+  become: true
+  become_method: sudo
+
+- name: Update hosts
+  command: chmod +x /usr/local/bin/argocd
+  become: true
+  become_method: sudo
+
+#- name: copy file and set permissions
+#  file:
+#    src: /usr/local/bin/argocd
+#    mode: a+x

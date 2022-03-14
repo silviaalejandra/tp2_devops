@@ -449,16 +449,27 @@ Para ello nos logueamos al equipo master con el usuario de servicio
 $ ssh <userServicio>@master
 ``` 
 
-Allí ejecutamos los siguientes comandos que nos poermiten obtener informacion de nuestro cluster. Debemos obtener el puerto por el cual redirecciones el ingress
+Allí ejecutamos los siguientes comandos que nos permiten obtener informacion de nuestro cluster. Debemos obtener el puerto por el cual redirecciones el ingress
 
 ```
+sudo kubectl get svc -A -o wide
 ```
+
+<p align="center">
+  <img src="images/kube03.jpg" />
+</p>
+
+De aquí obtenemos el puerto con el cual redirecciona el puerto 80 de las aplicaciones. En el ejemplo el mismo es 30446. Se obtiene del Ingress Controller haproxy-kubernetes-ingress.
 
 Y debemos obtener la contraseña del usuario administrador de ArgoCD que se genera por defecto con un hash en la instalación.
 
 ```
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}"  | base64 -d;  echo
 ```
+
+<p align="center">
+  <img src="images/kube06.jpg" />
+</p>
 
 Para cambiarla debemos ejecutar
 
@@ -472,6 +483,11 @@ Ejecutamos fuera del cluster lo siguiente. Para ello debemos contar con la IP Pu
 ```
 $ argocd login --insecure master:xxxx
 ```
+
+<p align="center">
+  <img src="images/kube07.jpg" />
+</p>
+
 Obtendremos un prompt para ingresar usuario y contraseña. El primer ingreso será con el hash obtendo en el paso anterior.
 
 
